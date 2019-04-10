@@ -57,7 +57,7 @@ public class FT {
 		rfTime=-1000;
 		trigger = 0;
 		
-		rfPeriod = 2.004;
+		rfPeriod = 4.008;
 
 		H1F summary = new H1F("summary","summary",6,1,7);
        		summary.setTitleX("sector");

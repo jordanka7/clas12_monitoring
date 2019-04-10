@@ -21,7 +21,7 @@ import org.jlab.groot.base.GStyle;
 public class monitor2p2GeV {
 	boolean userTimeBased, write_volatile;
 	int Nevts, Nelecs, Ntrigs, runNum;
-        public int Nmuons, Nmuontrigs; 
+        public int Nmuons, Nmuontrigs;
 	int[] Nmuonpairs, Ntrackspair, Nmuonpairs_v8, Ntrackspair_v8;
 	boolean[] trigger_bits;
 	public float EB, Ebeam;
@@ -83,7 +83,6 @@ public class monitor2p2GeV {
 	public H2F[] H_R1phiDp_mom;
 
 	public H1F[] H_dce_chi2;
-
 	F1D fit_vz_S1, fit_vz_S2, fit_vz_S3, fit_vz_S4, fit_vz_S5, fit_vz_S6;
 	public GraphErrors g_m_ESampl_ECal, g_s_ESampl_ECal;
 
@@ -92,7 +91,7 @@ public class monitor2p2GeV {
 
 	public H2F H_CVT_ft, H_CVT_pt, H_CVT_pf, H_CVT_zf, H_CVT_zp, H_CVT_zt;
 	public H1F H_CVT_p, H_CVT_t, H_CVT_f, H_CVT_z, H_CVT_chi2, H_CVT_ndf, H_CVT_pathlength;
-	public H1F H_CVT_z_pos, H_CVT_z_neg, H_CVT_chi2_pos, H_CVT_chi2_neg, H_CVT_chi2_elec;
+	public H1F H_CVT_z_pos, H_CVT_z_neg, H_CVT_chi2_pos, H_CVT_chi2_neg;
 
 	public H1F[] H_MM_epip_Spip, H_MM_epip_Se;
 	public H1F H_MM_epip, H_MM_epip_zoom, H_pip_vtd, H_pip_vz_ve_diff, H_pip_Dphi;
@@ -100,7 +99,7 @@ public class monitor2p2GeV {
 	public H2F H_pip_theta_phi, H_pip_theta_mom, H_pip_phi_mom, H_pip_vz_phi, H_pip_vz_theta, H_pip_vz_mom, H_pip_e_vt, H_pip_vz_ve;
 	public H2F H_pip_vz_ve_diff_mom, H_pip_vz_ve_diff_theta, H_pip_vz_ve_diff_phi, H_pip_vz_ve_diff_Dphi;
 	public H2F H_MM_epip_phi, H_pip_beta_p, H_pip_beta2_p, H_pip_vtd_mom, H_pip_vtd_theta, H_pip_vtd_phi;
-	public H2F H_epip_e_theta_phi, H_epip_e_theta_mom, H_epip_e_phi_mom, H_epip_xB_Q2, H_epip_e_W_Q2, H_epip_e_t_phi; 
+	public H2F H_epip_e_theta_phi, H_epip_e_theta_mom, H_epip_e_phi_mom, H_epip_xB_Q2, H_epip_e_W_Q2, H_epip_e_t_phi;
 
 	public H1F H_rho_IM, H_rho_MM;
 	public H2F H_rho_Q2_xB, H_rho_Q2_W;
@@ -112,7 +111,6 @@ public class monitor2p2GeV {
 	public H1F H_trig_sector_prot_rat, H_trig_sector_piplus_rat, H_trig_sector_piminus_rat, H_trig_sector_kplus_rat, H_trig_sector_kminus_rat, H_trig_sector_photon_rat, H_trig_sector_neutron_rat, H_trig_sector_deut_rat;
 	public H1F H_trig_sector_positive_rat, H_trig_sector_negative_rat, H_trig_sector_neutral_rat;
 	public H1F H_Nclust_ev, H_clust1_E, H_clust2_E;
-
 	public H1F H_trig_S1_ETOT_E, H_trig_S1_ECAL_E, H_trig_S1_PCAL_E, H_trig_S1_HTCC_n, H_trig_S1_HTCC_N, H_trig_S1_HTCC_N_track;
 	public H1F H_trig_S2_ETOT_E, H_trig_S2_ECAL_E, H_trig_S2_PCAL_E, H_trig_S2_HTCC_n, H_trig_S2_HTCC_N, H_trig_S2_HTCC_N_track;
 	public H1F H_trig_S3_ETOT_E, H_trig_S3_ECAL_E, H_trig_S3_PCAL_E, H_trig_S3_HTCC_n, H_trig_S3_HTCC_N, H_trig_S3_HTCC_N_track;
@@ -147,6 +145,10 @@ public class monitor2p2GeV {
 	public H1F[] H_e_RFtime1_S , H_pip_RFtime1_S, H_pim_RFtime1_S;
 	public H1F  H_RFtimediff ;
 
+	public H1F hbstOccupancy,hbmtOccupancy,htrks,hpostrks,hnegtrks,hndf,hchi2norm,hp,hpt,hpathlen,hbstOnTrkLayers,hbmtOnTrkLayers; //checkpoint_central
+	public H1F hpostrks_rat, hnegtrks_rat; //checkpoint_central
+	public H1F H_trig_central_prot_rat, H_trig_central_deut_rat, H_trig_central_piplus_rat,H_trig_central_piminus_rat,H_trig_central_kplus_rat,H_trig_central_kminus_rat; //checkpoint_central
+
 	public monitor2p2GeV(int reqrunNum, float reqEB, boolean reqTimeBased, boolean reqwrite_volatile ) {
 		runNum = reqrunNum;EB=reqEB;userTimeBased=reqTimeBased;
 		write_volatile = reqwrite_volatile;
@@ -155,7 +157,7 @@ public class monitor2p2GeV {
 		found_eTraj = 0;
 		found_eHTCC = 0;
 		trigger_bits = new boolean[32];
-		//Ebeam = 2.22f;
+                //Ebeam = 2.22f;
                 //if(reqEB>0 && reqEB<4)Ebeam=2.22f;
                 //if(reqEB>4 && reqEB<7.1)Ebeam=6.42f;
                 //if(reqEB>7.1 && reqEB<9)Ebeam=7.55f;
@@ -180,10 +182,13 @@ System.out.println("Beam energy = "+Ebeam);
 		}
 
                 Ntrackspair = new int[3];
-		Nmuonpairs = new int[3];               
+		Nmuonpairs = new int[3];
 		Ntrackspair_v8 = new int[6];
                 Nmuonpairs_v8 = new int[6];
 
+		tofvt1 = 0;
+		tofvt2 = 300;
+		//Initializing rf histograms.
 		H_RFtimediff = new H1F("H_RFtimediff","H_RFtimediff",100,-5,5);
 		H_RFtimediff.setTitle("RF time difference (1-2)");
 		H_RFtimediff.setTitleX("RF1-RF2 (ns)");
@@ -202,9 +207,6 @@ System.out.println("Beam energy = "+Ebeam);
 			H_pim_RFtime1_S[i].setTitleX("RF1 time for #pi^- (ns)");
 		}
 
-
-		tofvt1 = 0;
-		tofvt2 = 300; 
 		H_TOF_vt_S1m = new H1F("H_TOF_vt_S1n","H_TOF_vt_S1n",100,tofvt1,tofvt2);
 		H_TOF_vt_S1m.setTitle("S1 neg TOF vert t");
 		H_TOF_vt_S1m.setTitleX("vert t (ns)");
@@ -358,7 +360,7 @@ System.out.println("Beam energy = "+Ebeam);
                 H_trig_sector_deut_rat = new H1F("H_trig_sector_deut_rat","H_trig_sector_deut_rat",6,0.5,6.5);
                 H_trig_sector_deut_rat.setTitle("deut / trig per sect");
                 H_trig_sector_deut_rat.setTitleX("Sector number");
- 		H_trig_sector_positive_rat = new H1F("H_trig_sector_positive_rat","H_trig_sector_positive_rat",6,0.5,6.5);
+		H_trig_sector_positive_rat = new H1F("H_trig_sector_positive_rat","H_trig_sector_positive_rat",6,0.5,6.5);
 		H_trig_sector_positive_rat.setTitle("positive / trig per sect");
 		H_trig_sector_positive_rat.setTitleX("Sector number");
 		H_trig_sector_negative_rat = new H1F("H_trig_sector_negative_rat","H_trig_sector_negative_rat",6,0.5,6.5);
@@ -368,6 +370,25 @@ System.out.println("Beam energy = "+Ebeam);
 		H_trig_sector_neutral_rat.setTitle("neutral / trig per sect");
 		H_trig_sector_neutral_rat.setTitleX("Sector number");
 
+		//checkpoint_central
+		H_trig_central_prot_rat = new H1F("H_trig_central_prot_rat","H_trig_central_prot_rat",1,0.5,1.5);
+		H_trig_central_prot_rat.setTitle("prot / trig");
+		H_trig_central_prot_rat.setTitleX(" ");
+		H_trig_central_piplus_rat = new H1F("H_trig_central_piplus_rat","H_trig_central_piplus_rat",1,0.5,1.5);
+		H_trig_central_piplus_rat.setTitle("#pi+ / trig");
+		H_trig_central_piplus_rat.setTitleX(" ");
+		H_trig_central_piminus_rat = new H1F("H_trig_central_piminus_rat","H_trig_central_piminus_rat",1,0.5,1.5);
+		H_trig_central_piminus_rat.setTitle("#pi- / trig");
+		H_trig_central_piminus_rat.setTitleX(" ");
+		H_trig_central_kplus_rat = new H1F("H_trig_central_kplus_rat","H_trig_central_kplus_rat",1,0.5,1.5);
+		H_trig_central_kplus_rat.setTitle("K+ / trig");
+		H_trig_central_kplus_rat.setTitleX(" ");
+		H_trig_central_kminus_rat = new H1F("H_trig_central_kminus_rat","H_trig_central_kminus_rat",1,0.5,1.5);
+		H_trig_central_kminus_rat.setTitle("K- / trig");
+		H_trig_central_kminus_rat.setTitleX(" ");
+		H_trig_central_deut_rat = new H1F("H_trig_central_deut_rat","H_trig_central_deut_rat",1,0.5,1.5);
+                H_trig_central_deut_rat.setTitle("deut / trig");
+                H_trig_central_deut_rat.setTitleX(" ");
 
 		PCAL_Thresh_S1 = new H1F("PCAL_Thresh_S1","PCAL_Thresh_S1",100,0,0.5);
 		PCAL_Thresh_S1.setTitle("PCAL E S1");
@@ -891,11 +912,8 @@ System.out.println("Beam energy = "+Ebeam);
 		H_CVT_chi2_neg = new H1F("H_CVT_chi2_neg","H_CVT_chi2_neg",100,0,200);
 		H_CVT_chi2_neg.setTitle("CVT #chi^2 for negatives");
 		H_CVT_chi2_neg.setTitleX("#chi^2");
-		H_CVT_chi2_elec = new H1F("H_CVT_chi2_elec","H_CVT_chi2_elec",100,0,200);
-		H_CVT_chi2_elec.setTitle("CVT #chi^2 for electrons");
-		H_CVT_chi2_elec.setTitleX("#chi^2");
 
-	       	H_CVT_ndf = new H1F("H_CVT_ndf","H_CVT_ndf",10,0.5,10.5);
+	  H_CVT_ndf = new H1F("H_CVT_ndf","H_CVT_ndf",10,0.5,10.5);
 		H_CVT_ndf.setTitle("CVT NDF");
 		H_CVT_ndf.setTitleX("NDF");
 		H_CVT_pathlength = new H1F("H_CVT_pathlength","H_CVT_pathlength",100,20,75);
@@ -966,7 +984,6 @@ System.out.println("Beam energy = "+Ebeam);
 		H_o_vt.setTitleX("t (ns)");
 
         	VB = new LorentzVector(0,0,Ebeam,Ebeam);
-System.out.println("Beam energy = "+Ebeam);
 		VT = new LorentzVector(0,0,0,0.93827);
 		H_e_theta_phi = new H2F("H_e_theta_phi","H_e_theta_phi",100,-180,180,100,0,40);
 		H_e_theta_phi.setTitle("electron theta vs phi");
@@ -993,6 +1010,7 @@ System.out.println("Beam energy = "+Ebeam);
 		H_trig_S_HTCC_theta = new H1F[6];
 		H_e_W_S = new H1F[6];
 		H_e_W_phi_S = new H2F[6];
+
 		for(int s=0;s<7;s++){
 			for(int it=0;it<10;it++){
 				float thetaMin = 5+2.0f*it;
@@ -1396,7 +1414,7 @@ System.out.println("Beam energy = "+Ebeam);
 		H_dcp_phiK_mom.setTitle("DC pos #phi kick vs mom");
 		H_dcp_phiK_mom.setTitleX("p (GeV)");
 		H_dcp_phiK_mom.setTitleY("#Delta#phi (^o)");
-		
+
 		H2_dcm_vz_phi = new H2F("H2_dcm_vz_phi","H2_dcm_vz_phi",36,-180,180,100,20,35);
 		//H2_dcm_vz_phi.setTitle("DC neg vz vs #phi, |#theta-22.5|<2.5");
 		H2_dcm_vz_phi.setTitle("DC neg vz vs #phi");
@@ -1407,7 +1425,7 @@ System.out.println("Beam energy = "+Ebeam);
 		H2_dcp_vz_phi.setTitle("DC pos vz vs #phi");
 		H2_dcp_vz_phi.setTitleX("#phi");
 		H2_dcp_vz_phi.setTitleY("v_{z} (cm)");
-		
+
 		H_dcm_chi2 = new H1F[7];
 		H_R1phiDm_mom = new H2F[7];
 		H_R1_dcm_XY = new H2F[7];
@@ -1429,7 +1447,7 @@ System.out.println("Beam energy = "+Ebeam);
 			H_dcm_vz[s] = new H1F(String.format("H_dcm_vz_s%d",s+1),String.format("H_dcm_vz_s%d",s+1),100,-25,25);
 			H_dcm_vz[s].setTitle(String.format("S%d vz DC neg mom>1.5 GeV",s+1));
 		}
-	
+
 		H_dcp_chi2 = new H1F[7];
 		H_R1phiDp_mom = new H2F[7];
 		H_R1_dcp_XY = new H2F[7];
@@ -1451,11 +1469,27 @@ System.out.println("Beam energy = "+Ebeam);
 			H_dcp_vz[s] = new H1F(String.format("H_dcp_vz_s%d",s+1),String.format("H_dcp_vz_s%d",s+1),100,-25,25);
 			H_dcp_vz[s].setTitle(String.format("S%d vz DC pos mom>1.5 GeV",s+1));
 		}
-		//electrons
+		//electrons chi2
 		H_dce_chi2 = new H1F[6];
 		for(int s=0;s<6;s++){
 			H_dce_chi2[s] = new H1F(String.format("H_dce_chi2_S%d",s+1),String.format("S%d #chi^2 DC elec",s+1),100,0,500);
 		}
+
+		//checkpoint_central
+		hbstOccupancy = new H1F("hbstOccupancy", 100,0,100);
+		hbmtOccupancy = new H1F("hbmtOccupancy", 100,0,100);
+		htrks = new H1F("htrks", 10,0,10);
+		hpostrks = new H1F("hpostrks", 10,0,10);
+		hnegtrks = new H1F("hnegtrks", 10,0,10);
+		hpostrks_rat = new H1F("hpostrks_rat", 10,0,10);
+		hnegtrks_rat = new H1F("hnegtrks_rat", 10,0,10);
+		hndf = new H1F("hndf", 10,0,10);
+		hchi2norm = new H1F("hchi2norm", 100,0,100);
+		hp = new H1F("hp", 100,0,10);
+		hpt = new H1F("hpt", 100,0,10);
+		hpathlen = new H1F("hpathlen", 100,0,70);
+		hbstOnTrkLayers = new H1F("hbstOnTrkLayers", 10,0,10);
+		hbmtOnTrkLayers = new H1F("hbmtOnTrkLayers", 10,0,10);
 
 		G_accCharge = new GraphErrors();
 		G_accCharge.setMarkerSize(1);
@@ -1553,7 +1587,7 @@ System.out.println("Beam energy = "+Ebeam);
 		if( l1 * l2 !=0 && Math.abs(prod)<l1*l2 )res = Math.toDegrees( Math.acos(prod/(l1*l2) ) );
 		return res;
 	}
-	public int makePiPlus(DataBank bank){ 
+	public int makePiPlus(DataBank bank){
 		for(int k = 0; k < bank.rows(); k++){
 			float px = bank.getFloat("p0_x" , k);
 			float py = bank.getFloat("p0_y" , k);
@@ -1614,45 +1648,47 @@ System.out.println("Beam energy = "+Ebeam);
 		}
 		return -1;
 	}
+
 	public int makePiMinusPID(DataBank bank){
-		boolean foundelec = false;
-		int npositives = 0;
-		int nnegatives = 0;
-		float mybeta = 0;
-		for(int k = 0; k < bank.rows(); k++){
-			int pid = bank.getInt("pid", k);
-			int status = bank.getShort("status", k);
-			byte q = bank.getByte("charge", k);
-			float thisbeta = bank.getFloat("beta", k);
-			boolean inDC = (status>=2000 && status<4000);
-			if(inDC && pid==11)foundelec=true;
-			if(inDC && q<0&&thisbeta>0)nnegatives++;
-			if(inDC && npositives==0&&q>0&&thisbeta>0)mybeta=thisbeta;
-			if(inDC && q>0&&thisbeta>0)npositives++;
-		}
-		if(foundelec && nnegatives==2 && mybeta>0){
-			for(int k = 0; k < bank.rows(); k++){
-				int pid = bank.getInt("pid", k);
-				byte q = bank.getByte("charge", k);
-				float px = bank.getFloat("px", k);
-				float py = bank.getFloat("py", k);
-				float pz = bank.getFloat("pz", k);
-				pim_mom = (float)Math.sqrt(px*px+py*py+pz*pz);
-				pim_theta = (float)Math.toDegrees(Math.acos(pz/pim_mom));
-				pim_phi = (float)Math.toDegrees(Math.atan2(py,px));
-				pim_vx = bank.getFloat("vx", k);
-				pim_vy = bank.getFloat("vy", k);
-				pim_vz = bank.getFloat("vz", k);
-				pim_beta = bank.getFloat("beta", k);
-				if( q<0 && pim_mom>0.5 && pim_theta<40 && pim_theta>5 && pim_beta>0 && pid!=11){
-					VPIM = new LorentzVector(px,py,pz,Math.sqrt(pim_mom*pim_mom+0.139*0.139));
-					return k;
-				}
-			}
-		}
-		return -1;
+					boolean foundelec = false;
+					int npositives = 0;
+					int nnegatives = 0;
+					float mybeta = 0;
+					for(int k = 0; k < bank.rows(); k++){
+									int pid = bank.getInt("pid", k);
+									int status = bank.getShort("status", k);
+									byte q = bank.getByte("charge", k);
+									float thisbeta = bank.getFloat("beta", k);
+									boolean inDC = (status>=2000 && status<4000);
+									if(inDC && pid==11)foundelec=true;
+									if(inDC && q<0&&thisbeta>0)nnegatives++;
+									if(inDC && npositives==0&&q>0&&thisbeta>0)mybeta=thisbeta;
+									if(inDC && q>0&&thisbeta>0)npositives++;
+					}
+					if(foundelec && nnegatives==2 && mybeta>0){
+									for(int k = 0; k < bank.rows(); k++){
+													int pid = bank.getInt("pid", k);
+													byte q = bank.getByte("charge", k);
+													float px = bank.getFloat("px", k);
+													float py = bank.getFloat("py", k);
+													float pz = bank.getFloat("pz", k);
+													pim_mom = (float)Math.sqrt(px*px+py*py+pz*pz);
+													pim_theta = (float)Math.toDegrees(Math.acos(pz/pim_mom));
+													pim_phi = (float)Math.toDegrees(Math.atan2(py,px));
+													pim_vx = bank.getFloat("vx", k);
+													pim_vy = bank.getFloat("vy", k);
+													pim_vz = bank.getFloat("vz", k);
+													pim_beta = bank.getFloat("beta", k);
+
+													if( q<0 && pim_mom>0.5 && pim_theta<40 && pim_theta>5 && pim_beta>0 && pid!=11){
+																	VPIM = new LorentzVector(px,py,pz,Math.sqrt(pim_mom*pim_mom+0.139*0.139));
+																	return k;
+													}
+									}
+					}
+					return -1;
 	}
-	
+
 	public int makePiPlusPimPID(DataBank bank){
 		boolean foundelec = false;
 		int npositives = 0;
@@ -1671,9 +1707,9 @@ System.out.println("Beam energy = "+Ebeam);
 			if(inDC && pid!=11&&nnegatives<2&&q<0&&thisbeta>0)mybetan=thisbeta;
 			if(inDC && q>0&&thisbeta>0)npositives++;
 		}
-		
+
 		//if(foundelec && nnegatives==2 && npositives==1)System.out.println(foundelec+" , "+nnegatives+" , "+npositives+" , "+mybetap+" , "+mybetan);
-		
+
 		if(foundelec && nnegatives==2 && npositives==1 && mybetap>0 && mybetan>0){}
 		if(foundelec && nnegatives==2 && npositives>0 && npositives<3 && mybetap>0 ){
 			for(int k = 0; k < bank.rows(); k++){
@@ -1716,7 +1752,7 @@ System.out.println("Beam energy = "+Ebeam);
 				}
 			}
 		}
-		//if(pim_part_ind>-1)System.out.println("DEBUG PIMPIP part_ind : "+pim_part_ind+" , "+pip_part_ind);
+		// if(pim_part_ind>-1)System.out.println("DEBUG PIMPIP part_ind : "+pim_part_ind+" , "+pip_part_ind);
 		return -1;
 	}
 	public int makeElectron(DataBank bank){
@@ -1817,6 +1853,11 @@ System.out.println("Beam energy = "+Ebeam);
 		for(int k = 0; k < bank.rows(); k++){
 			int pid = bank.getInt("pid", k);
 			byte q = bank.getByte("charge", k);
+			float beta = bank.getFloat("beta", k);
+			int status = bank.getShort("status", k);
+			boolean Forward = (status<4000);
+			boolean Central = (status>=4000);
+
 			int sector = 0;
 			if(q!=0 && Trackbank!=null){
 				for(int l=0;l<Trackbank.rows() && sector==0 ;l++)if(Trackbank.getInt("pindex",l)==k)sector=Trackbank.getInt("sector",l);
@@ -1824,7 +1865,7 @@ System.out.println("Beam energy = "+Ebeam);
 			if(q==0 && ECALbank!=null){
 				for(int l=0;l<ECALbank.rows() && sector==0 ;l++)if(ECALbank.getInt("pindex",l)==k)sector=ECALbank.getInt("sector",l);
 			}
-			if(sector>0){
+			if(Forward&&sector>0){
 				if(pid==2212){
 					H_trig_sector_prot.fill(sector);
 					H_trig_sector_prot_rat.fill(sector);
@@ -1865,6 +1906,16 @@ System.out.println("Beam energy = "+Ebeam);
 				}
 				if (q<0){
 					H_trig_sector_negative_rat.fill(sector);
+				}
+			}
+			if (Central){
+				if (beta > 0. && beta < 1.05) {
+					if (q>0 && pid==2212) H_trig_central_prot_rat.fill(1);//checkpoint_central
+					if (q>0 && pid==211) H_trig_central_piplus_rat.fill(1);//checkpoint_central
+					if (q<0 && pid==-211) H_trig_central_piminus_rat.fill(1);//checkpoint_central
+					if (q>0 && pid==321) H_trig_central_kplus_rat.fill(1);//checkpoint_central
+					if (q<0 && pid==-321) H_trig_central_kminus_rat.fill(1);//checkpoint_central
+					if (q>0 && pid==45 && beta < 5.) H_trig_central_deut_rat.fill(1);//checkpoint_central
 				}
 			}
 		}
@@ -1945,6 +1996,7 @@ System.out.println("Beam energy = "+Ebeam);
 				float pimDCbeta = pim_mom/epim;
 				pim_vert_time = bank.getFloat("time",k)-bank.getFloat("path",k)/ (29.98f * pimDCbeta) ;
 			}
+			// System.out.println(String.format(RFtime1+"	"+RFtime2));
 		}
 	}
 	public void fillOtherTOF(DataBank bank){
@@ -2000,9 +2052,9 @@ System.out.println("Beam energy = "+Ebeam);
 					e_HTCC_tX = trajBank.getFloat("x",r);
                                         e_HTCC_tY = trajBank.getFloat("y",r);
                                         e_HTCC_tZ = trajBank.getFloat("z",r);
-				}		
+				}
 			}
-		}	
+		}
 		for(int r=0;r<htcc.rows();r++){
                         if(htcc.getShort("pindex",r)==e_part_ind){
                                 if(htcc.getByte("detector",r)==15){
@@ -2052,7 +2104,8 @@ System.out.println("Beam energy = "+Ebeam);
                          //if(e_track_chi2<7500){
                                  H_trig_sector_elec.fill(e_sect);
                                  H_trig_sector_elec_rat.fill(e_sect);
-				 H_e_RFtime1_S[e_sect-1].fill(RFtime1);
+																 H_e_RFtime1_S[e_sect-1].fill(RFtime1);
+
                          //}
                  }
         }
@@ -2085,7 +2138,7 @@ System.out.println("Beam energy = "+Ebeam);
                                 }
                 }
 		if (sectorin > 0) retsector = sectorin;
-		if (sectorout > 0) retsector = sectorout; 
+		if (sectorout > 0) retsector = sectorout;
                 return retsector;
 	}
 
@@ -2101,20 +2154,20 @@ System.out.println("Beam energy = "+Ebeam);
                 }
                 return sectordc;
         }
-        
+
 
 	public int makeMuonPairTrigPurity(DataBank bank, DataEvent event){
                 int[] sectorp;
                 int[] sectorn;
                 sectorn = new int[6];
                 sectorp = new int[6];
-                int sect = -1; 
+                int sect = -1;
 		int tbit;
 
                 for (int j=0; j<3; j++) {
 			Ntrackspair[j]=0;
 			Nmuonpairs[j]=0;
-                }   
+                }
 
                	for(int k = 0; k < bank.rows(); k++){
                        	int pid = bank.getInt("pid", k);
@@ -2136,7 +2189,7 @@ System.out.println("Beam energy = "+Ebeam);
                                         }
 				//if (energy_ecal_E > 0.04 && energy_pcal_E > 0.01 && sect > 0) {
 				if (energy_ecal_E  >= 0.0 && energy_pcal_E >= 0.) {
-				
+
 				//System.out.println("charge="+q+" pid="+pid+" tofsect="+isFTOFmatch(event,k)+" ecalsect="+isECALmatch(event,k)+" dcsect="+isDCmatch(event,k)+" pcalsect="+sect+ " " +trigger_bits[7]+ " " +trigger_bits[8]+ " " +trigger_bits[9]);
 					if(q==1) sectorp[sect-1]++;
                                         if(q==-1) sectorn[sect-1]++;
@@ -2145,15 +2198,15 @@ System.out.println("Beam energy = "+Ebeam);
                                 }
                         }
                 }
-                
+
                 for (int kk = 0;kk < 3;kk++) {
 			tbit = kk+7;
-			if (runNum <=6296) { 
+			if (runNum <=6296) {
 				if (trigger_bits[tbit]) {
 					if ((sectorp[kk]+sectorn[kk]) >=1 && (sectorp[kk+3]+sectorn[kk+3]) >=1) {
 						H_trig_sector_muon.fill(kk+1);
 						H_trig_sector_muon_rat.fill(kk+1);
-						Nmuonpairs[kk]++; 
+						Nmuonpairs[kk]++;
 						Nmuons++;
                                 		Ntrackspair[kk] = sectorp[kk]+sectorn[kk+3];
 					}
@@ -2175,10 +2228,11 @@ System.out.println("Beam energy = "+Ebeam);
                 return 1;
 	}
 
-	public void getTBTrack(DataBank bank){ 
+	public void getTBTrack(DataBank bank){
 		if(e_track_ind>-1 && e_track_ind<bank.rows()){
 			 e_track_chi2 = bank.getFloat("chi2" , e_track_ind);
 			 e_sect = bank.getInt("sector", e_track_ind);
+			 H_dce_chi2[e_sect-1].fill(e_track_chi2); //adding electron chi2
 		 }
 		 if(pip_track_ind>-1 && pip_track_ind<bank.rows())pip_sect = bank.getInt("sector", pip_track_ind);
 		 if(pim_track_ind>-1 && pim_track_ind<bank.rows())pim_sect = bank.getInt("sector", pim_track_ind);
@@ -2266,7 +2320,7 @@ System.out.println("Beam energy = "+Ebeam);
 			float thetaR1P = (float)Math.toDegrees(Math.atan2(radR1P,bank.getFloat("c1_z",k)));
 			float phiR1P = (float)Math.toDegrees(Math.atan2(bank.getFloat("c1_y",k),bank.getFloat("c1_x",k)));
 			float phiR1D = (float)Math.toDegrees(Math.atan2(bank.getFloat("c1_uy",k),bank.getFloat("c1_ux",k)));
-                        
+
 			float DCR2_X = bank.getFloat("t1_x" , k);
                         float DCR2_Y = bank.getFloat("t1_y" , k);
                         float DCR2_Z = bank.getFloat("t1_z" , k);
@@ -2350,12 +2404,12 @@ System.out.println("Beam energy = "+Ebeam);
 				H_dcp_pvz_theta.fill(thetaR1P,Ivz);
 				H_dcp_pvt_pvz.fill(Ivz,Ivy);
 				H_dcp_phiK_mom.fill(mom,phiR1P-phi);
-				if(mom>0.15 
+				if(mom>0.15
 				  && bXos.getFloat("x",Xind1)*bXos.getFloat("y",Xind1)!=0
 				  && bXos.getFloat("x",Xind2)*bXos.getFloat("y",Xind2)!=0
 				  && bXos.getFloat("x",Xind3)*bXos.getFloat("y",Xind3)!=0
 				  ){
-					H_dcp_vz[s].fill(vz);	
+					H_dcp_vz[s].fill(vz);
 					H_dcp_chi2[s].fill(bank.getFloat("chi2" , k));
 					H_R1_dcp_XY[s].fill(bXos.getFloat("x",Xind1),bXos.getFloat("y",Xind1));
 					H_R2_dcp_XY[s].fill(bXos.getFloat("x",Xind2),bXos.getFloat("y",Xind2));
@@ -2364,7 +2418,7 @@ System.out.println("Beam energy = "+Ebeam);
 					H_R2_dcp_uXY[s].fill(bXos.getFloat("ux",Xind2),bXos.getFloat("uy",Xind2));
 					H_R3_dcp_uXY[s].fill(bXos.getFloat("ux",Xind3),bXos.getFloat("uy",Xind3));
 					H_R1phiDp_mom[s].fill(mom,phiR1D);
-					H_dcp_vz[6].fill(vz);	
+					H_dcp_vz[6].fill(vz);
 					H_dcp_chi2[6].fill(bank.getFloat("chi2" , k));
 					H_R1_dcp_XY[6].fill(bXos.getFloat("x",Xind1),bXos.getFloat("y",Xind1));
 					H_R2_dcp_XY[6].fill(bXos.getFloat("x",Xind2),bXos.getFloat("y",Xind2));
@@ -2451,7 +2505,11 @@ System.out.println("Beam energy = "+Ebeam);
 		}
 	}
 	public void makeCVT(DataBank bank){
-		for(int k = 0; k < bank.rows() && foundCVT==0; k++){
+		int tracks = bank.rows(); //checkpoint_central
+		htrks.fill(tracks);
+		int tracksPos = 0;
+		int tracksNeg = 0;
+		for(int k = 0; k < bank.rows(); k++){
 			float mom = bank.getFloat("p", k);
 			float momt = bank.getFloat("pt", k);
 			float tandip = bank.getFloat("tandip", k);
@@ -2468,8 +2526,40 @@ System.out.println("Beam energy = "+Ebeam);
 
 			//z0 = z0*0.1f;
 
+			//checkpoint_central
+			int q = bank.getInt("q", k);
+			if (q > 0){
+				tracksPos++;
+				H_CVT_chi2_pos.fill(chi2);
+				H_CVT_z_pos.fill(z0);
+			}
+			else if (q < 0){
+				tracksNeg++;
+				H_CVT_chi2_neg.fill(chi2);
+				H_CVT_z_neg.fill(z0);
+			}
+			hndf.fill(ndf);
+			hp.fill(mom);
+			hpt.fill(momt);
+			hpathlen.fill(pathlength);
+			float chi2norm = chi2 / (float) ndf;
+			hchi2norm.fill(chi2norm);
+			int bstOntrackCrosses = 0;
+			int bmtOntrackLayers = 0;
+
+			for (int i = 1; i < 10; ++i) {
+				int crossId = bank.getShort("Cross" + i + "_ID", k);
+				if (crossId == 0) continue;
+
+				if (crossId < 1000) bstOntrackCrosses++;
+				else if (crossId >= 1000) bmtOntrackLayers++;
+			}
+			int bstOntrackLayers = 2 * bstOntrackCrosses;
+			hbstOnTrkLayers.fill(bstOntrackLayers);
+			hbmtOnTrkLayers.fill(bmtOntrackLayers);
 			if(mom>0.15 && chi2<20000 && theta>0 && theta <180 && Math.abs(z0)<25 && ndf>2){}
 			if(mom>0.15 && chi2<20000 && theta>0 && theta <180 && Math.abs(z0)<25){
+				//electron
 				if(foundCVT==0){
 					foundCVT = 1;
 					CVT_mom = mom;
@@ -2483,6 +2573,11 @@ System.out.println("Beam energy = "+Ebeam);
 				}
 			}
 		}
+		hpostrks.fill(tracksPos);//checkpoint_central
+		hnegtrks.fill(tracksNeg);
+		hpostrks_rat.fill(tracksPos);//checkpoint_central
+		hnegtrks_rat.fill(tracksNeg);
+
 	}
 	public void fillTrigECAL(DataBank bank){
 		int[] NhitsSect = new int[6];
@@ -2769,45 +2864,45 @@ System.out.println("Beam energy = "+Ebeam);
 	}
         public void readScalers(DataBank rawScaler){
                 // channel 0 FCups for new code and channel 32 for old code
-                int chan = 0; 
+                int chan = 0;
                 // channel 2 clock slot 0 ungated slot 1 gated
                 int chan2 = 2;
-                float foundClock = -1; 
-                float foundGatedClock = -1; 
-                float foundFCup = -1; 
-                float foundGatedFCup = -1; 
+                float foundClock = -1;
+                float foundGatedClock = -1;
+                float foundFCup = -1;
+                float foundGatedFCup = -1;
 		boolean isLong = true;
 		//boolean isLong = false;
                 for(int k=0;k<rawScaler.rows();k++){
                         if(rawScaler.getShort("channel",k)==chan && rawScaler.getByte("slot",k)==0){
                                 if(isLong)foundGatedFCup = (float)rawScaler.getLong("value",k);
-				else foundGatedFCup = (float)rawScaler.getLong("value",k);
-                        }   
+				else foundGatedFCup = (float)rawScaler.getInt("value",k);
+                        }
                         if(rawScaler.getShort("channel",k)==chan && rawScaler.getByte("slot",k)==1){
                                 if(isLong)foundFCup = rawScaler.getLong("value",k);
-				else foundFCup = rawScaler.getLong("value",k);
-                        }   
+				else foundFCup = rawScaler.getInt("value",k);
+                        }
                         if(rawScaler.getShort("channel",k)==chan2 && rawScaler.getByte("slot",k)==0){
                                 if(isLong)foundGatedClock = rawScaler.getLong("value",k);
-				else foundGatedClock = rawScaler.getLong("value",k);
-                        }   
+				else foundGatedClock = rawScaler.getInt("value",k);
+                        }
                         if(rawScaler.getShort("channel",k)==chan2 && rawScaler.getByte("slot",k)==1){
                                 if(isLong)foundClock = rawScaler.getLong("value",k);
-				else foundClock = rawScaler.getLong("value",k);
-                        }   
+				else foundClock = rawScaler.getInt("value",k);
+                        }
                 }
 		if( ! (foundFCup>0 && foundGatedFCup>0) ){
 			chan = 32;
 			for(int k=0;k<rawScaler.rows();k++){
 				if(rawScaler.getShort("channel",k)==chan && rawScaler.getByte("slot",k)==0){
 					if(isLong)foundGatedFCup = (float)rawScaler.getLong("value",k);
-					else foundGatedFCup = (float)rawScaler.getLong("value",k);
-				}   
+					else foundGatedFCup = (float)rawScaler.getInt("value",k);
+				}
 				if(rawScaler.getShort("channel",k)==chan && rawScaler.getByte("slot",k)==1){
 					if(isLong)foundFCup = rawScaler.getLong("value",k);
-					else foundFCup = rawScaler.getLong("value",k);
+					else foundFCup = rawScaler.getInt("value",k);
 				}
-			}	
+			}
 		}
                 if(foundFCup>-1 && foundGatedFCup>-1){
                         float FCtrueFreq = scalerToHertz(foundFCup);
@@ -2823,7 +2918,7 @@ System.out.println("Beam energy = "+Ebeam);
 				G_FC_live_ratio.addPoint(Nevts,gatedCurrent/beamCurrent,0,0);
 			}
                         //System.out.println("Current : "+beamCurrent+" , gated current : "+gatedCurrent+" , FCUP LIVE "+(gatedCurrent*100f/beamCurrent)+"%");
-                }   
+                }
                 if(foundClock>-1 && foundGatedClock>-1){
                         float ClockFreq = scalerToHertz(foundClock);
                         float gatedClockFreq = scalerToHertz(foundGatedClock);
@@ -2832,14 +2927,14 @@ System.out.println("Beam energy = "+Ebeam);
 			if(gatedClockFreq>0)G_gatedClock_evn.addPoint(Nevts,gatedClockFreq,0,0);
 			if(ClockFreq>0 && gatedClockFreq>0)G_Clock_ratio.addPoint(Nevts,gatedClockFreq/ClockFreq,0,0);
                         //System.out.println("Current : "+beamCurrent+" , gated current : "+gatedCurrent+" , FCUP LIVE "+(gatedCurrent*100f/beamCurrent)+"%");
-                }   
+                }
         }
         public float scalerToHertz(float val){
                 return val/ (0.03333f - 0.0005f);// 30 Hz minus 0.5 ms dead for Helicity
-        }   
+        }
         public float HertzTonA(float freq){
                 return (freq-100f)/906.2f * 10.2f;
-        }   
+        }
 
 	public int getNelecs(){return this.Nelecs;}
 	public int getNtrigs(){return this.Ntrigs;}
@@ -2849,15 +2944,22 @@ System.out.println("Beam energy = "+Ebeam);
 		e_sect=0;foundCVT=0;
 		e_ecal_E = 0;e_pcal_e=0;e_etot_e=0;hasLTCC=0;
 		trig_track_ind = -1;e_track_ind = -1;pip_part_ind = -1;pim_part_ind = -1;
+
+		//checkpoint_central
+		float BSTCHANNELS = 21504;
+	  float BMTCHANNELS = 15000;
+
 		if(event.hasBank("RUN::rf")){
 			RFtime1=0;
 			RFtime2=0;
 			for(int r=0;r<event.getBank("RUN::rf").rows();r++){
+				// System.out.println(String.format(event.getBank("RUN::rf").getInt("id",r)+"	"+ r+"	"+ event.getBank("RUN::rf").rows()));
 				if(event.getBank("RUN::rf").getInt("id",r)==1)RFtime1=event.getBank("RUN::rf").getFloat("time",r);
 				else RFtime2=event.getBank("RUN::rf").getFloat("time",r);
+				//try else for RFtime2
 			}
 			H_RFtimediff.fill(RFtime1-RFtime2);
-			//RFtime2 = 0f;//bank.getFloat("time",1);
+			// RFtime2 = 0f;//bank.getFloat("time",1);
 		}
 		for(int i=1;i<7;i++)trigger_bits[i]=false;
 		if(event.hasBank("RUN::config")){
@@ -2946,14 +3048,32 @@ System.out.println("Beam energy = "+Ebeam);
 		if(trackDetBank!=null && event.hasBank("HTCC::rec"))checkTrigECAL(trackDetBank,event.getBank("HTCC::rec"));
 		if(trackDetBank!=null && event.hasBank("FTOF::hits"))fillTOFHists(event.getBank("FTOF::hits") ,trackDetBank);
 
+
+		//checkpoint_central
+		if(event.hasBank("BSTRec::Hits")) {
+      DataBank bstHitBank = event.getBank("BSTRec::Hits");
+      int bstHits = bstHitBank.rows();
+      float bstOccupancy = 100 * bstHits/BSTCHANNELS;
+      hbstOccupancy.fill(bstOccupancy);
+    }
+
+    if(event.hasBank("BMTRec::Hits")) {
+      DataBank bmtHitBank = event.getBank("BMTRec::Hits");
+      int bmtHits = bmtHitBank.rows();
+      float bmtOccupancy = 100 * bmtHits/BMTCHANNELS;
+      hbmtOccupancy.fill(bmtOccupancy);
+    }
+
+
 		if(event.hasBank("CVTRec::Tracks"))makeCVT(event.getBank("CVTRec::Tracks"));
-		
+
 		if(partBank!=null){
 			makePhotons(partBank,event);
 			e_part_ind = makeElectron(partBank);
 			pip_part_ind = makePiPlusPID(partBank);
 			pim_part_ind = makePiMinusPID(partBank);
-			//makePiPlusPimPID(partBank);
+			makePiPlusPimPID(partBank);
+			// if(pim_part_ind>-1)System.out.println("in main : "+pim_part_ind+" , "+pip_part_ind);
 		}
 		if(e_part_ind==-1)return;
 		//makePhotons(partBank,event);
@@ -2966,7 +3086,7 @@ System.out.println("Beam energy = "+Ebeam);
                 e_Q2 = (float) -VGS.mass2();
                 e_xB = e_Q2/(2f*0.93827f*(Ebeam-e_mom));
                 e_W  = (float) Math.sqrt(0.93827f*0.93827f + e_Q2*(1f/e_xB-1f) );
-		
+
 		//eventBank = null, partBank = null, trackBank = null, trackDetBank = null, ecalBank = null, cherenkovBank = null, scintillBank = null, crossBank = null;
 
 		if(ecalBank!=null)getElecEBECal(ecalBank);
@@ -2983,7 +3103,7 @@ System.out.println("Beam energy = "+Ebeam);
 
 		if( event.hasBank("RECHB::Event") && event.hasBank("RECHB::Track") )fillRECHBsects( event.getBank("RECHB::Particle") , event.getBank("RECHB::Track") );
 		if( event.hasBank("REC::Event") && event.hasBank("REC::Track") )fillRECsects( event.getBank("REC::Particle") , event.getBank("REC::Track") );
-		
+
 		if(event.hasBank("HitBasedTrkg::HBTracks"))fillHBDCbanks(event.getBank("HitBasedTrkg::HBTracks"));
 		if(event.hasBank("TimeBasedTrkg::TBTracks"))fillTBDCbanks(event.getBank("TimeBasedTrkg::TBTracks"));
 
@@ -3048,7 +3168,7 @@ System.out.println("Beam energy = "+Ebeam);
                                         //public float e_HTCC, e_LTCC, e_pcal_e, e_etot_e, e_TOF_X, e_TOF_Y, e_TOF_Z, e_HTCC_X, e_HTCC_Y, e_HTCC_Z;
                                         //public float e_DCR1_X, e_DCR1_Y, e_DCR2_X, e_DCR2_Y, e_DCR3_X, e_DCR3_Y;
                                         //public H2F[] H_trig_ECAL_pos_S, H_trig_TOF_pos_S, H_trig_HTCC_pos_S, H_trig_DCR1_pos_S, H_trig_DCR2_pos_S, H_trig_DCR3_pos_S;
-					
+
 					int th_bin = (int) Math.floor( (e_theta-5.0f)/2.0f );
 					if(th_bin>-1&&th_bin<10){
 						//H_trig_phi_theta_S[e_sect-1][th_bin].fill(elec_phi_sect);
@@ -3110,7 +3230,7 @@ System.out.println("Beam energy = "+Ebeam);
 			}
 			//opposite sectors condition
 			//if((pip_sect+3)%6==e_sect)
-			if( pim_part_ind==-1 && pip_part_ind>-1 && Math.abs(pip_vert_time-e_vert_time)<5 && Math.abs(pip_beta-1) <(0.01 + 0.025/pip_mom) 
+			if( pim_part_ind==-1 && pip_part_ind>-1 && Math.abs(pip_vert_time-e_vert_time)<5 && Math.abs(pip_beta-1) <(0.01 + 0.025/pip_mom)
 					&& pip_track_chi2<2000 && e_track_chi2<2000 && pip_mom>1
 			  ){
 				LorentzVector VNeutr = new LorentzVector(0,0,0,0);
@@ -3152,14 +3272,13 @@ System.out.println("Beam energy = "+Ebeam);
 				H_epip_e_W_Q2.fill(e_W,e_Q2);
 				float[] elec_4v = {(float)Ve.e(),(float)Ve.px(),(float)Ve.py(),(float)Ve.pz()};
 				float[] neut_4v = {(float)VNeutr.e(),(float)VNeutr.px(),(float)VNeutr.py(),(float)VNeutr.pz()};
-				float epip_phi = Phi_Calculator(elec_4v,neut_4v, Ebeam);
+				float epip_phi = Phi_Calculator(elec_4v,neut_4v, 10.6f);
 				VNeutr.sub(VT);
 				float epip_t = (float) -VNeutr.mass2();
 				H_epip_e_t_phi.fill(epip_phi,epip_t);
 				H_pip_RFtime1_S[pip_sect-1].fill(RFtime1);
 
 			}
-
 			//pi minus
 			if( pip_part_ind==-1 && pim_part_ind>-1 && Math.abs(pim_vert_time-e_vert_time)<5 && Math.abs(pim_beta-1) <(0.01 + 0.025/pim_mom)
 					&& pim_track_chi2<2000 && e_track_chi2<2000 && pim_mom>1)
@@ -3168,7 +3287,7 @@ System.out.println("Beam energy = "+Ebeam);
 				H_pim_RFtime1_S[pim_sect-1].fill(RFtime1);
 			}
 
-
+			//pion
 			if(pim_part_ind>-1 && pip_part_ind>-1 && pim_track_chi2<750 && pip_track_chi2<750 && e_track_chi2<750){
 				LorentzVector VRHO = new LorentzVector(0,0,0,0);
 				VRHO.add(VPIP);
@@ -3200,33 +3319,29 @@ System.out.println("Beam energy = "+Ebeam);
                                 int   NDFcut   = 2;//2
                                 float pathCut  = 75;
                                 float bbPhicut = 20;
-                                float bbPhi0   = 0; 
+                                float bbPhi0   = 0;
                                 float vzCut    = 25;
-                                float vz0      = 0; 
+                                float vz0      = 0;
                                 boolean vzCutIs   = Math.abs(e_vz-CVT_vz-vz0)<vzCut;
                                 boolean PhiCutIs  = true;//Math.abs(phiDiff-bbPhi0)<bbPhicut;
                                 boolean NDFcutIs  = CVT_ndf>NDFcut;
                                 boolean chi2CutIs = CVT_chi2<chi2cut;
                                 boolean pathCutIs = true;//CVT_pathlength<pathCut;
-                                boolean ThetaCut  = true;//Math.abs(e_theta -0.5f - CVT_eth) < 2; 
+                                boolean ThetaCut  = true;//Math.abs(e_theta -0.5f - CVT_eth) < 2;
                                 //boolean CVT_elast = CVT_mom>4f*(1f-CVT_theta/70f) && CVT_mom<(4f+7f/9f)*(1f-CVT_theta/90f) && CVT_theta>60 && CVT_mom>0.5;
                                 boolean CVT_elast = true;//CVT_mom>4f*(1f-CVT_theta/70f) && CVT_mom<(4f+7f/9f)*(1f-CVT_theta/90f);
                                 if(            PhiCutIs && NDFcutIs && chi2CutIs && pathCutIs && ThetaCut && CVT_elast)H_CVT_e_corr_vz.fill(e_vz,CVT_vz);
                                 if( vzCutIs             && NDFcutIs && chi2CutIs && pathCutIs && ThetaCut && CVT_elast)H_CVT_e_corr_phi.fill(e_phi,CVT_phi);
                                 if( vzCutIs && PhiCutIs             && chi2CutIs && pathCutIs && ThetaCut && CVT_elast)H_CVT_ndf.fill(CVT_ndf);
                                 if( vzCutIs && PhiCutIs && NDFcutIs              && pathCutIs && ThetaCut && CVT_elast){
-					H_CVT_chi2.fill(CVT_chi2);
-					if (CVTcharge>0) H_CVT_chi2_pos.fill(CVT_chi2);
-					if (CVTcharge<0) H_CVT_chi2_neg.fill(CVT_chi2);
-                                }
-				if( vzCutIs && PhiCutIs && NDFcutIs && chi2CutIs && pathCutIs && ThetaCut && CVT_elast){
+                                H_CVT_chi2.fill(CVT_chi2);
+																}
+                                if( vzCutIs && PhiCutIs && NDFcutIs && chi2CutIs && pathCutIs && ThetaCut && CVT_elast){
                                         H_CVT_p.fill(CVT_mom);
                                         H_CVT_t.fill(CVT_theta);
                                         H_CVT_f.fill(CVT_phi);
                                         H_CVT_z.fill(CVT_vz);
-                                        if (CVTcharge>0) H_CVT_z_pos.fill(CVT_vz);
-					if (CVTcharge<0) H_CVT_z_neg.fill(CVT_vz);
-					H_CVT_ft.fill(CVT_phi,CVT_theta);
+                                        H_CVT_ft.fill(CVT_phi,CVT_theta);
                                         H_CVT_pt.fill(CVT_theta,CVT_mom);
                                         H_CVT_pf.fill(CVT_phi,CVT_mom);
                                         H_CVT_zf.fill(CVT_phi,CVT_vz);
@@ -3239,11 +3354,11 @@ System.out.println("Beam energy = "+Ebeam);
                                         H_elast_e_p_th.fill(e_mom,e_theta);
                                         H_elast_W_sect.fill(e_sect,e_W);
                                         H_elast_W.fill(e_W);
-                                        float CVT_emom = Ebeam/(1 + 2*Ebeam/0.93827f *(float)Math.pow( Math.sin(CVT_eth/(2*57.296)),2 ) ); 
+                                        float CVT_emom = Ebeam/(1 + 2*Ebeam/0.93827f *(float)Math.pow( Math.sin(CVT_eth/(2*57.296)),2 ) );
                                         H_CVT_corr_e_mom.fill(CVT_emom,e_mom);
                                         //if(Math.abs(phiDiff+10)<10)System.out.println("CVTcharge = "+CVTcharge);
 //                                        System.out.println("After CVT : "+NDFcut+" , "+CVT_elast+ "\n");
-                                }    
+                                }
                         }
 		}
 	}
@@ -3263,16 +3378,16 @@ System.out.println("Beam energy = "+Ebeam);
 		fit_vz_S1.setParameter(7,5.5);
 		fit_vz_S1.setParameter(8,0.5);
 		DataFitter.fit(fit_vz_S1,H_S1_dcp_vz,"Q");
-		System.out.printf("\nS1 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("\nS1 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S1.getParameter(1) , fit_vz_S1.parameter(1).error(),fit_vz_S1.getParameter(2) , fit_vz_S1.parameter(2).error(),
 								fit_vz_S1.getParameter(0) , fit_vz_S1.parameter(0).error());
-		System.out.printf("                   (2) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("                   (2) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S1.getParameter(4) , fit_vz_S1.parameter(4).error(),fit_vz_S1.getParameter(5) , fit_vz_S1.parameter(5).error(),
 								fit_vz_S1.getParameter(3) , fit_vz_S1.parameter(3).error());
-		System.out.printf("                   (3) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("                   (3) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S1.getParameter(7) , fit_vz_S1.parameter(7).error(),fit_vz_S1.getParameter(8) , fit_vz_S1.parameter(8).error(),
 								fit_vz_S1.getParameter(6) , fit_vz_S1.parameter(6).error());
-		
+
 		MaxBinNum = H_S2_dcp_vz.getMaximumBin();
 		MaxBinContent = H_S2_dcp_vz.getBinContent(MaxBinNum);
 		fit_vz_S2 = new F1D("fit_vz_S2","[amp]*gaus(x,[mean],[sigma]) + [amp2]*gaus(x,[mean2],[sigma2]) + [amp3]*gaus(x,[mean3],[sigma3])",-6,7);
@@ -3287,13 +3402,13 @@ System.out.println("Beam energy = "+Ebeam);
 		fit_vz_S2.setParameter(7,5.5);
 		fit_vz_S2.setParameter(8,0.5);
 		DataFitter.fit(fit_vz_S2,H_S2_dcp_vz,"Q");
-		System.out.printf("\nS2 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("\nS2 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S2.getParameter(1) , fit_vz_S2.parameter(1).error(),fit_vz_S2.getParameter(2) , fit_vz_S2.parameter(2).error(),
 								fit_vz_S2.getParameter(0) , fit_vz_S2.parameter(0).error());
-		System.out.printf("                   (2) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("                   (2) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S2.getParameter(4) , fit_vz_S2.parameter(4).error(),fit_vz_S2.getParameter(5) , fit_vz_S2.parameter(5).error(),
 								fit_vz_S2.getParameter(3) , fit_vz_S2.parameter(3).error());
-		System.out.printf("                   (3) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("                   (3) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S2.getParameter(7) , fit_vz_S2.parameter(7).error(),fit_vz_S2.getParameter(8) , fit_vz_S2.parameter(8).error(),
 								fit_vz_S2.getParameter(6) , fit_vz_S2.parameter(6).error());
 
@@ -3311,13 +3426,13 @@ System.out.println("Beam energy = "+Ebeam);
 		fit_vz_S3.setParameter(7,5.5);
 		fit_vz_S3.setParameter(8,0.5);
 		DataFitter.fit(fit_vz_S3,H_S3_dcp_vz,"Q");
-		System.out.printf("\nS3 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("\nS3 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S3.getParameter(1) , fit_vz_S3.parameter(1).error(),fit_vz_S3.getParameter(2) , fit_vz_S3.parameter(2).error(),
 								fit_vz_S3.getParameter(0) , fit_vz_S3.parameter(0).error());
-		System.out.printf("                   (2) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("                   (2) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S3.getParameter(4) , fit_vz_S3.parameter(4).error(),fit_vz_S3.getParameter(5) , fit_vz_S3.parameter(5).error(),
 								fit_vz_S3.getParameter(3) , fit_vz_S3.parameter(3).error());
-		System.out.printf("                   (3) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("                   (3) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S3.getParameter(7) , fit_vz_S3.parameter(7).error(),fit_vz_S3.getParameter(8) , fit_vz_S3.parameter(8).error(),
 								fit_vz_S3.getParameter(6) , fit_vz_S3.parameter(6).error());
 
@@ -3335,13 +3450,13 @@ System.out.println("Beam energy = "+Ebeam);
 		fit_vz_S4.setParameter(7,5.5);
 		fit_vz_S4.setParameter(8,0.5);
 		DataFitter.fit(fit_vz_S4,H_S4_dcp_vz,"Q");
-		System.out.printf("\nS4 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("\nS4 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S4.getParameter(1) , fit_vz_S4.parameter(1).error(),fit_vz_S4.getParameter(2) , fit_vz_S4.parameter(2).error(),
 								fit_vz_S4.getParameter(0) , fit_vz_S4.parameter(0).error());
-		System.out.printf("                   (2) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("                   (2) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S4.getParameter(4) , fit_vz_S4.parameter(4).error(),fit_vz_S4.getParameter(5) , fit_vz_S4.parameter(5).error(),
 								fit_vz_S4.getParameter(3) , fit_vz_S4.parameter(3).error());
-		System.out.printf("                   (3) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("                   (3) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S4.getParameter(7) , fit_vz_S4.parameter(7).error(),fit_vz_S4.getParameter(8) , fit_vz_S4.parameter(8).error(),
 								fit_vz_S4.getParameter(6) , fit_vz_S4.parameter(6).error());
 
@@ -3359,13 +3474,13 @@ System.out.println("Beam energy = "+Ebeam);
 		fit_vz_S5.setParameter(7,5.5);
 		fit_vz_S5.setParameter(8,0.5);
 		DataFitter.fit(fit_vz_S5,H_S5_dcp_vz,"Q");
-		System.out.printf("\nS5 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("\nS5 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S5.getParameter(1) , fit_vz_S5.parameter(1).error(),fit_vz_S5.getParameter(2) , fit_vz_S5.parameter(2).error(),
 								fit_vz_S5.getParameter(0) , fit_vz_S5.parameter(0).error());
-		System.out.printf("                   (2) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("                   (2) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S5.getParameter(4) , fit_vz_S5.parameter(4).error(),fit_vz_S5.getParameter(5) , fit_vz_S5.parameter(5).error(),
 								fit_vz_S5.getParameter(3) , fit_vz_S5.parameter(3).error());
-		System.out.printf("                   (3) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("                   (3) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S5.getParameter(7) , fit_vz_S5.parameter(7).error(),fit_vz_S5.getParameter(8) , fit_vz_S5.parameter(8).error(),
 								fit_vz_S5.getParameter(6) , fit_vz_S5.parameter(6).error());
 
@@ -3383,13 +3498,13 @@ System.out.println("Beam energy = "+Ebeam);
 		fit_vz_S6.setParameter(7,5.5);
 		fit_vz_S6.setParameter(8,0.5);
 		DataFitter.fit(fit_vz_S6,H_S6_dcp_vz,"Q");
-		System.out.printf("\nS6 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("\nS6 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S6.getParameter(1) , fit_vz_S6.parameter(1).error(),fit_vz_S6.getParameter(2) , fit_vz_S6.parameter(2).error(),
 								fit_vz_S6.getParameter(0) , fit_vz_S6.parameter(0).error());
-		System.out.printf("                   (2) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("                   (2) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S6.getParameter(4) , fit_vz_S6.parameter(4).error(),fit_vz_S6.getParameter(5) , fit_vz_S6.parameter(5).error(),
 								fit_vz_S6.getParameter(3) , fit_vz_S6.parameter(3).error());
-		System.out.printf("                   (3) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("                   (3) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S6.getParameter(7) , fit_vz_S6.parameter(7).error(),fit_vz_S6.getParameter(8) , fit_vz_S6.parameter(8).error(),
 								fit_vz_S6.getParameter(6) , fit_vz_S6.parameter(6).error());
 
@@ -3410,10 +3525,10 @@ System.out.println("Beam energy = "+Ebeam);
 		fit_vz_S1.setParameter(1,-3.25);
 		fit_vz_S1.setParameter(2,1);
 		DataFitter.fit(fit_vz_S1,H_S1_dcp_vz,"Q");
-		System.out.printf("\nS1 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("\nS1 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S1.getParameter(1) , fit_vz_S1.parameter(1).error(),fit_vz_S1.getParameter(2) , fit_vz_S1.parameter(2).error(),
 								fit_vz_S1.getParameter(0) , fit_vz_S1.parameter(0).error());
-		
+
 		MaxBinNum = H_S2_dcp_vz.getMaximumBin();
 		MaxBinContent = H_S2_dcp_vz.getBinContent(MaxBinNum);
 		fit_vz_S2 = new F1D("fit_vz_S2","[amp]*gaus(x,[mean],[sigma])",-6,7);
@@ -3422,7 +3537,7 @@ System.out.println("Beam energy = "+Ebeam);
 		fit_vz_S2.setParameter(1,-3.25);
 		fit_vz_S2.setParameter(2,1);
 		DataFitter.fit(fit_vz_S2,H_S2_dcp_vz,"Q");
-		System.out.printf("\nS2 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("\nS2 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S2.getParameter(1) , fit_vz_S2.parameter(1).error(),fit_vz_S2.getParameter(2) , fit_vz_S2.parameter(2).error(),
 								fit_vz_S2.getParameter(0) , fit_vz_S2.parameter(0).error());
 
@@ -3434,7 +3549,7 @@ System.out.println("Beam energy = "+Ebeam);
 		fit_vz_S3.setParameter(1,-3.25);
 		fit_vz_S3.setParameter(2,1);
 		DataFitter.fit(fit_vz_S3,H_S3_dcp_vz,"Q");
-		System.out.printf("\nS3 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("\nS3 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S3.getParameter(1) , fit_vz_S3.parameter(1).error(),fit_vz_S3.getParameter(2) , fit_vz_S3.parameter(2).error(),
 								fit_vz_S3.getParameter(0) , fit_vz_S3.parameter(0).error());
 
@@ -3446,7 +3561,7 @@ System.out.println("Beam energy = "+Ebeam);
 		fit_vz_S4.setParameter(1,-3.25);
 		fit_vz_S4.setParameter(2,1);
 		DataFitter.fit(fit_vz_S4,H_S4_dcp_vz,"Q");
-		System.out.printf("\nS4 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("\nS4 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S4.getParameter(1) , fit_vz_S4.parameter(1).error(),fit_vz_S4.getParameter(2) , fit_vz_S4.parameter(2).error(),
 								fit_vz_S4.getParameter(0) , fit_vz_S4.parameter(0).error());
 
@@ -3458,7 +3573,7 @@ System.out.println("Beam energy = "+Ebeam);
 		fit_vz_S5.setParameter(1,-3.25);
 		fit_vz_S5.setParameter(2,1);
 		DataFitter.fit(fit_vz_S5,H_S5_dcp_vz,"Q");
-		System.out.printf("\nS5 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("\nS5 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S5.getParameter(1) , fit_vz_S5.parameter(1).error(),fit_vz_S5.getParameter(2) , fit_vz_S5.parameter(2).error(),
 								fit_vz_S5.getParameter(0) , fit_vz_S5.parameter(0).error());
 
@@ -3470,43 +3585,31 @@ System.out.println("Beam energy = "+Ebeam);
 		fit_vz_S6.setParameter(1,-3.25);
 		fit_vz_S6.setParameter(2,1);
 		DataFitter.fit(fit_vz_S6,H_S6_dcp_vz,"Q");
-		System.out.printf("\nS6 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" , 
+		System.out.printf("\nS6 vz Fit result : (1) = %1.3f +/- %1.3f , sig = %1.3f +/- %1.3f , norm = %1.3f +/- %1.3f\n" ,
 		                                                fit_vz_S6.getParameter(1) , fit_vz_S6.parameter(1).error(),fit_vz_S6.getParameter(2) , fit_vz_S6.parameter(2).error(),
 								fit_vz_S6.getParameter(0) , fit_vz_S6.parameter(0).error());
 	}
 	*/
         public void plot() {
-		
+
 		EmbeddedCanvas can_TOF = new EmbeddedCanvas();
 		can_TOF.setSize(2400,1600);
-		can_TOF.divide(6,4);
+		can_TOF.divide(6,2);
 		can_TOF.setAxisTitleSize(24);
 		can_TOF.setAxisFontSize(24);
 		can_TOF.setTitleSize(24);
-		can_TOF.cd(0);can_TOF.draw(H_TOF_vt_S1m);
-		can_TOF.cd(1);can_TOF.draw(H_TOF_vt_S2m);
-		can_TOF.cd(2);can_TOF.draw(H_TOF_vt_S3m);
-		can_TOF.cd(3);can_TOF.draw(H_TOF_vt_S4m);
-		can_TOF.cd(4);can_TOF.draw(H_TOF_vt_S5m);
-		can_TOF.cd(5);can_TOF.draw(H_TOF_vt_S6m);
-		can_TOF.cd(6);can_TOF.draw(H_TOF_vt_mom_S1m);
-		can_TOF.cd(7);can_TOF.draw(H_TOF_vt_mom_S2m);
-		can_TOF.cd(8);can_TOF.draw(H_TOF_vt_mom_S3m);
-		can_TOF.cd(9);can_TOF.draw(H_TOF_vt_mom_S4m);
-		can_TOF.cd(10);can_TOF.draw(H_TOF_vt_mom_S5m);
-		can_TOF.cd(11);can_TOF.draw(H_TOF_vt_mom_S6m);
-		can_TOF.cd(12);can_TOF.draw(H_TOF_vt_S1p);
-		can_TOF.cd(13);can_TOF.draw(H_TOF_vt_S2p);
-		can_TOF.cd(14);can_TOF.draw(H_TOF_vt_S3p);
-		can_TOF.cd(15);can_TOF.draw(H_TOF_vt_S4p);
-		can_TOF.cd(16);can_TOF.draw(H_TOF_vt_S5p);
-		can_TOF.cd(17);can_TOF.draw(H_TOF_vt_S6p);
-		can_TOF.cd(18);can_TOF.draw(H_TOF_vt_mom_S1p);
-		can_TOF.cd(19);can_TOF.draw(H_TOF_vt_mom_S2p);
-		can_TOF.cd(20);can_TOF.draw(H_TOF_vt_mom_S3p);
-		can_TOF.cd(21);can_TOF.draw(H_TOF_vt_mom_S4p);
-		can_TOF.cd(22);can_TOF.draw(H_TOF_vt_mom_S5p);
-		can_TOF.cd(23);can_TOF.draw(H_TOF_vt_mom_S6p);
+		can_TOF.cd(0);can_TOF.draw(H_TOF_vt_mom_S1m);
+		can_TOF.cd(1);can_TOF.draw(H_TOF_vt_mom_S2m);
+		can_TOF.cd(2);can_TOF.draw(H_TOF_vt_mom_S3m);
+		can_TOF.cd(3);can_TOF.draw(H_TOF_vt_mom_S4m);
+		can_TOF.cd(4);can_TOF.draw(H_TOF_vt_mom_S5m);
+		can_TOF.cd(5);can_TOF.draw(H_TOF_vt_mom_S6m);
+		can_TOF.cd(6);can_TOF.draw(H_TOF_vt_mom_S1p);
+		can_TOF.cd(7);can_TOF.draw(H_TOF_vt_mom_S2p);
+		can_TOF.cd(8);can_TOF.draw(H_TOF_vt_mom_S3p);
+		can_TOF.cd(9);can_TOF.draw(H_TOF_vt_mom_S4p);
+		can_TOF.cd(10);can_TOF.draw(H_TOF_vt_mom_S5p);
+		can_TOF.cd(11);can_TOF.draw(H_TOF_vt_mom_S6p);
 		if(runNum>0){
 			if(!write_volatile)can_TOF.save(String.format("plots"+runNum+"/TOF.png"));
 			if(write_volatile)can_TOF.save(String.format("/volatile/clas12/rgb/spring19/plots"+runNum+"/TOF.png"));
@@ -3516,7 +3619,7 @@ System.out.println("Beam energy = "+Ebeam);
 			can_TOF.save(String.format("plots/TOF.png"));
 			System.out.println(String.format("save plots/TOF.png"));
 		}
-		
+
 		EmbeddedCanvas can_2pis = new EmbeddedCanvas();
 		can_2pis.setSize(2800,1400);
 		can_2pis.divide(4,2);
@@ -3559,7 +3662,7 @@ System.out.println("Beam energy = "+Ebeam);
 		//can_ecal_thresh.cd(10);can_ecal_thresh.draw(ETOT_Sampl_S5);
 		//can_ecal_thresh.cd(11);can_ecal_thresh.draw(ETOT_Sampl_S6);
 		//can_ecal_thresh.save("plots/ecal_thresh.png");
-		
+
 		EmbeddedCanvas can_miss_trig = new EmbeddedCanvas();
 		can_miss_trig.setSize(2400,1200);
 		can_miss_trig.divide(6,3);
@@ -3595,8 +3698,8 @@ System.out.println("Beam energy = "+Ebeam);
 		}
 
 		EmbeddedCanvas can_trig_sect = new EmbeddedCanvas();
-		can_trig_sect.setSize(2400,4000);
-		can_trig_sect.divide(6,12);
+		can_trig_sect.setSize(2400,4400);//checkpoint_central
+		can_trig_sect.divide(6,13);
 		can_trig_sect.setAxisTitleSize(24);
 		can_trig_sect.setAxisFontSize(24);
 		can_trig_sect.setTitleSize(24);
@@ -3651,21 +3754,12 @@ System.out.println("Beam energy = "+Ebeam);
 		H_trig_S4_HTCC_N_track.setLineColor(2);
 		H_trig_S5_HTCC_N_track.setLineColor(2);
 		H_trig_S6_HTCC_N_track.setLineColor(2);
-		can_trig_sect.cd(42);can_trig_sect.draw(H_trig_S1_HTCC_N);can_trig_sect.draw(H_trig_S1_HTCC_N_track,"same");
-		can_trig_sect.cd(43);can_trig_sect.draw(H_trig_S2_HTCC_N);can_trig_sect.draw(H_trig_S2_HTCC_N_track,"same");
-		can_trig_sect.cd(44);can_trig_sect.draw(H_trig_S3_HTCC_N);can_trig_sect.draw(H_trig_S3_HTCC_N_track,"same");
-		can_trig_sect.cd(45);can_trig_sect.draw(H_trig_S4_HTCC_N);can_trig_sect.draw(H_trig_S4_HTCC_N_track,"same");
-		can_trig_sect.cd(46);can_trig_sect.draw(H_trig_S5_HTCC_N);can_trig_sect.draw(H_trig_S5_HTCC_N_track,"same");
-		can_trig_sect.cd(47);can_trig_sect.draw(H_trig_S6_HTCC_N);can_trig_sect.draw(H_trig_S6_HTCC_N_track,"same");
 		can_trig_sect.cd(48);can_trig_sect.draw(H_trig_S1_HTCC_XY);
 		can_trig_sect.cd(49);can_trig_sect.draw(H_trig_S2_HTCC_XY);
 		can_trig_sect.cd(50);can_trig_sect.draw(H_trig_S3_HTCC_XY);
 		can_trig_sect.cd(51);can_trig_sect.draw(H_trig_S4_HTCC_XY);
 		can_trig_sect.cd(52);can_trig_sect.draw(H_trig_S5_HTCC_XY);
 		can_trig_sect.cd(53);can_trig_sect.draw(H_trig_S6_HTCC_XY);
-		for(int s=0;s<6;s++){
-			can_trig_sect.cd(54+s);can_trig_sect.draw(H_trig_S_HTCC_theta[s]);
-		}
 		can_trig_sect.cd(60);can_trig_sect.draw(H_trig_sector_prot_rat);
 		can_trig_sect.cd(61);can_trig_sect.draw(H_trig_sector_piplus_rat);
 		can_trig_sect.cd(62);can_trig_sect.draw(H_trig_sector_piminus_rat);
@@ -3679,6 +3773,13 @@ System.out.println("Beam energy = "+Ebeam);
 		can_trig_sect.cd(70);can_trig_sect.draw(H_trig_sector_negative_rat);//test drawing for trig, negative rat
 		can_trig_sect.cd(71);can_trig_sect.draw(H_trig_sector_neutral_rat);//test drawing for, trig neutral rat
 
+		can_trig_sect.cd(72);can_trig_sect.draw(H_trig_central_prot_rat);//checkpoint_central
+		can_trig_sect.cd(73);can_trig_sect.draw(H_trig_central_piplus_rat);//checkpoint_central
+		can_trig_sect.cd(74);can_trig_sect.draw(H_trig_central_piminus_rat);//checkpoint_central
+		can_trig_sect.cd(75);can_trig_sect.draw(H_trig_central_kplus_rat);//checkpoint_central
+		can_trig_sect.cd(76);can_trig_sect.draw(H_trig_central_kminus_rat);//checkpoint_central
+                can_trig_sect.cd(76);can_trig_sect.draw(H_trig_central_deut_rat);//checkpoint_central
+
 		if(runNum>0){
 			if(!write_volatile)can_trig_sect.save(String.format("plots"+runNum+"/trig_sect.png"));
 			if(write_volatile)can_trig_sect.save(String.format("/volatile/clas12/rgb/spring19/plots"+runNum+"/trig_sect.png"));
@@ -3690,7 +3791,7 @@ System.out.println("Beam energy = "+Ebeam);
 		}
 
 		EmbeddedCanvas can_e_pip = new EmbeddedCanvas();
-		can_e_pip.setSize(3500,3000);
+		can_e_pip.setSize(3500,3000);//checkpoint_central
 		can_e_pip.divide(7,6);
 		can_e_pip.setAxisTitleSize(24);
 		can_e_pip.setAxisFontSize(24);
@@ -3710,7 +3811,7 @@ System.out.println("Beam energy = "+Ebeam);
 		can_e_pip.cd(11);can_e_pip.draw(H_pip_vz_theta);
 		can_e_pip.cd(12);can_e_pip.draw(H_pip_vz_mom);
 		can_e_pip.cd(13);can_e_pip.draw(H_pip_vz_ve_diff_theta);
-		
+
 		can_e_pip.cd(14);can_e_pip.draw(H_pip_vtd_mom);
 		can_e_pip.cd(15);can_e_pip.draw(H_pip_vtd_theta);
 		can_e_pip.cd(16);can_e_pip.draw(H_pip_vtd_phi);
@@ -3718,24 +3819,23 @@ System.out.println("Beam energy = "+Ebeam);
 		can_e_pip.cd(18);can_e_pip.draw(H_pip_vz_ve_diff);
 		can_e_pip.cd(19);can_e_pip.draw(H_pip_vz_ve_diff_mom);
 		can_e_pip.cd(20);can_e_pip.draw(H_pip_vz_ve_diff_phi);
-		
+
 		can_e_pip.cd(21);can_e_pip.draw(H_pip_beta_p);
 		can_e_pip.cd(22);can_e_pip.draw(H_pip_beta2_p);
 		can_e_pip.cd(23);can_e_pip.draw(H_MM_epip);
 		can_e_pip.cd(24);can_e_pip.draw(H_MM_epip_zoom);
-		can_e_pip.cd(25);can_e_pip.draw(H_MM_epip_phi);	
+		can_e_pip.cd(25);can_e_pip.draw(H_MM_epip_phi);
 		can_e_pip.cd(26);can_e_pip.draw(H_pip_e_vt);
 		can_e_pip.cd(27);can_e_pip.draw(H_pip_vz_ve_diff_Dphi);
-		
+
 		for(int i=0;i<6;i++){
 			can_e_pip.cd(28+i);can_e_pip.draw(H_MM_epip_Spip[i]);
 		}
-		can_e_pip.cd(34); can_e_pip.draw(H_pip_vtd);		
+		can_e_pip.cd(34); can_e_pip.draw(H_pip_vtd);
 		for(int i=0;i<6;i++){
 			can_e_pip.cd(35+i);can_e_pip.draw(H_MM_epip_Se[i]);
 		}
 		can_e_pip.cd(41); can_e_pip.draw(H_pim_vtd);
-
 
 		if(runNum>0){
 			if(!write_volatile)can_e_pip.save(String.format("plots"+runNum+"/e_pip.png"));
@@ -3746,11 +3846,11 @@ System.out.println("Beam energy = "+Ebeam);
 			can_e_pip.save(String.format("plots/e_pip.png"));
 			System.out.println(String.format("save plots/e_pip.png"));
 		}
-		
+
 		EmbeddedCanvas can_CVT = new EmbeddedCanvas();
-		can_CVT.setSize(3500,1500);
-		//can_CVT.divide(7,3);
-		can_CVT.divide(7,4);
+		can_CVT.setSize(3500,3000);
+		// can_CVT.divide(7,3);
+		can_CVT.divide(7,6);
 		can_CVT.setAxisTitleSize(24);
 		can_CVT.setAxisFontSize(24);
 		can_CVT.setTitleSize(24);
@@ -3761,7 +3861,7 @@ System.out.println("Beam energy = "+Ebeam);
 		can_CVT.cd(4);can_CVT.draw(H_CVT_e_vz_diff);
 		can_CVT.cd(5);can_CVT.draw(H_CVT_chi2);
 		can_CVT.cd(6);can_CVT.draw(H_elast_e_p_th);
-		
+
 		can_CVT.cd(7);can_CVT.draw(H_CVT_ft);
 		can_CVT.cd(8);can_CVT.draw(H_CVT_pt);
 		can_CVT.cd(9);can_CVT.draw(H_CVT_pf);
@@ -3770,7 +3870,7 @@ System.out.println("Beam energy = "+Ebeam);
 		can_CVT.cd(12);can_CVT.draw(H_CVT_ndf);
 		can_CVT.getPad(12).getAxisY().setLog(true);
 		can_CVT.cd(13);can_CVT.draw(H_elast_W_sect);
-		
+
 		can_CVT.cd(14);can_CVT.draw(H_CVT_zp);
 		can_CVT.cd(15);can_CVT.draw(H_CVT_zt);
 		can_CVT.cd(16);can_CVT.draw(H_CVT_e_corr_vz);
@@ -3788,7 +3888,20 @@ System.out.println("Beam energy = "+Ebeam);
 		can_CVT.cd(23);can_CVT.draw(H_CVT_z_neg);//Test drawing for vz_neg cvt
 		can_CVT.cd(24);can_CVT.draw(H_CVT_chi2_pos);//Test drawing for chi2_pos cvt
 		can_CVT.cd(25);can_CVT.draw(H_CVT_chi2_neg);//Test drawing for chi2_neg cvt
-		// can_CVT.cd(26);can_CVT.draw(H_CVT_chi2_elec);//Test drawing for chi2_elec cvt
+		can_CVT.cd(26);can_CVT.draw(hbstOccupancy);//checkpoint_central
+		can_CVT.cd(27);can_CVT.draw(hbmtOccupancy);
+		can_CVT.cd(28);can_CVT.draw(htrks);
+		can_CVT.cd(29);can_CVT.draw(hpostrks);
+		can_CVT.cd(30);can_CVT.draw(hnegtrks);
+		can_CVT.cd(31);can_CVT.draw(hndf);
+		can_CVT.cd(32);can_CVT.draw(hchi2norm);
+		can_CVT.cd(33);can_CVT.draw(hp);
+		can_CVT.cd(34);can_CVT.draw(hpt);
+		can_CVT.cd(35);can_CVT.draw(hpathlen);
+		can_CVT.cd(36);can_CVT.draw(hbstOnTrkLayers);
+		can_CVT.cd(37);can_CVT.draw(hbmtOnTrkLayers);
+		can_CVT.cd(38);can_CVT.draw(hpostrks_rat);
+		can_CVT.cd(39);can_CVT.draw(hnegtrks_rat);
 
 		if(runNum>0){
 			if(!write_volatile)can_CVT.save(String.format("plots"+runNum+"/cvt.png"));
@@ -3838,7 +3951,7 @@ System.out.println("Beam energy = "+Ebeam);
 		can_e_ecal.draw(elasticElec,"same");
 		can_e_ecal.getPad(1).getAxisY().setRange(0, 40);
 		can_e_ecal.cd(2);can_e_ecal.draw(H_e_phi_mom);
-		
+
 		can_e_ecal.cd(3);can_e_ecal.draw(H_e_vz_phi);
 		can_e_ecal.cd(4);can_e_ecal.draw(H_e_vz_theta);
 		can_e_ecal.cd(5);can_e_ecal.draw(H_e_vz_p);
@@ -3852,14 +3965,14 @@ System.out.println("Beam energy = "+Ebeam);
 		H_e_HTCC_nphe_txy.divide(H_e_HTCC_txy);
 		can_e_ecal.getPad(42).getAxisZ().setRange(5,25);
 		can_e_ecal.cd(42);can_e_ecal.draw(H_e_HTCC_nphe_txy);
-		
+
 		can_e_ecal.cd(8);can_e_ecal.draw(H_e_LTCC_xy);
 		can_e_ecal.cd(14);can_e_ecal.draw(H_e_LTCC_nphe);
-		
+
 		can_e_ecal.cd(9);can_e_ecal.draw(H_e_TOF_xy);
 		H_e_vt2.setLineColor(2);
 		can_e_ecal.cd(15);can_e_ecal.draw(H_e_vt1);can_e_ecal.draw(H_e_vt2,"same");
-		
+
 		can_e_ecal.cd(11);can_e_ecal.draw(H_e_vz);
 		can_e_ecal.cd(10);can_e_ecal.draw(H_e_TOF_t_path);
 		can_e_ecal.cd(16);can_e_ecal.draw(H_o_TOF);
@@ -3915,7 +4028,7 @@ System.out.println("Beam energy = "+Ebeam);
 			System.out.println(String.format("save plots/RF.png"));
 		}
 
-	
+
 		for(int iP=0;iP<4;iP++){
 			EmbeddedCanvas can_e_FMM = new EmbeddedCanvas();
 			can_e_FMM.setSize(3600,2400);
@@ -3939,7 +4052,7 @@ System.out.println("Beam energy = "+Ebeam);
 				System.out.println(String.format("save plots/e_FMM_mon"+iP+".png"));
 			}
 		}
-	
+
 
 		EmbeddedCanvas can_e_phi_theta = new EmbeddedCanvas();
 		can_e_phi_theta.setSize(3500,5000);
@@ -3961,8 +4074,8 @@ System.out.println("Beam energy = "+Ebeam);
 		}
 
 		EmbeddedCanvas can_e_sect = new EmbeddedCanvas();
-		can_e_sect.setSize(3000,5000);
-		can_e_sect.divide(6,10);
+		can_e_sect.setSize(3000,5500);
+		can_e_sect.divide(6,11);
 		can_e_sect.setAxisTitleSize(24);
 		can_e_sect.setAxisFontSize(24);
 		can_e_sect.setTitleSize(24);
@@ -3977,7 +4090,7 @@ System.out.println("Beam energy = "+Ebeam);
                         can_e_sect.cd(42+s);can_e_sect.draw(H_trig_PCALECAL_S[s]);
 			can_e_sect.cd(48+s);can_e_sect.draw(H_trig_HTCCn_theta_S[s]);
 			can_e_sect.cd(54+s);can_e_sect.draw(H_trig_LTCCn_theta_S[s]);
-			//can_e_sect.cd(30+s);can_e_sect.draw([s]);
+			can_e_sect.cd(60+s);can_e_sect.draw(H_dce_chi2[s]);
 		}
 		if(runNum>0){
 			if(!write_volatile)can_e_sect.save(String.format("plots"+runNum+"/e_sects.png"));
@@ -4107,25 +4220,16 @@ System.out.println("Beam energy = "+Ebeam);
 
 		EmbeddedCanvas can_e_phys = new EmbeddedCanvas();
 		can_e_phys.setSize(1500,1500);
-		can_e_phys.divide(3,3);
+		can_e_phys.divide(3,1);
 		can_e_phys.setAxisTitleSize(18);
 		can_e_phys.setAxisFontSize(18);
 		can_e_phys.setTitleSize(18);
-		can_e_phys.cd(0);can_e_phys.draw(H_e_W);
-		can_e_phys.cd(1);can_e_phys.draw(H_e_Q2);
-		can_e_phys.cd(2);can_e_phys.draw(H_e_xB);
-		can_e_phys.cd(3);can_e_phys.draw(H_e_W);
-		can_e_phys.getPad(3).getAxisY().setLog(true);
-		can_e_phys.cd(4);can_e_phys.draw(H_e_Q2);
-		can_e_phys.getPad(4).getAxisY().setLog(true);
-		can_e_phys.cd(5);can_e_phys.draw(H_e_xB);
-		can_e_phys.getPad(5).getAxisY().setLog(true);
-		can_e_phys.cd(6);can_e_phys.draw(H_e_xB_Q2);
-		can_e_phys.getPad(6).getAxisZ().setLog(true);
-		can_e_phys.cd(7);can_e_phys.draw(H_e_W_Q2);
-		can_e_phys.getPad(7).getAxisZ().setLog(true);
-		can_e_phys.cd(8);can_e_phys.draw(H_e_xB_W);
-		can_e_phys.getPad(8).getAxisZ().setLog(true);
+		can_e_phys.cd(0);can_e_phys.draw(H_e_xB_Q2);
+		can_e_phys.getPad(0).getAxisZ().setLog(true);
+		can_e_phys.cd(1);can_e_phys.draw(H_e_W_Q2);
+		can_e_phys.getPad(1).getAxisZ().setLog(true);
+		can_e_phys.cd(2);can_e_phys.draw(H_e_xB_W);
+		can_e_phys.getPad(2).getAxisZ().setLog(true);
 		if(runNum>0){
 			if(!write_volatile)can_e_phys.save(String.format("plots"+runNum+"/e_phys.png"));
 			if(write_volatile)can_e_phys.save(String.format("/volatile/clas12/rgb/spring19/plots"+runNum+"/e_phys.png"));
@@ -4156,28 +4260,28 @@ System.out.println("Beam energy = "+Ebeam);
 		can_dc_mon.cd(3);can_dc_mon.draw(H_dcm_vz_phi);
 		can_dc_mon.cd(4);can_dc_mon.draw(H_dcm_vz_p);
 		can_dc_mon.cd(5);can_dc_mon.draw(H_dcm_vz_theta);
-		
+
 		can_dc_mon.cd(6);can_dc_mon.draw(H_dcm_R1th_R1ph);
 		can_dc_mon.cd(7);can_dc_mon.draw(H_dcm_R1the_mom);
 		can_dc_mon.cd(8);can_dc_mon.draw(H_dcm_R1ph_mom);
 		can_dc_mon.cd(9);can_dc_mon.draw(H_dcm_pvz_phi);
 		can_dc_mon.cd(10);can_dc_mon.draw(H_dcm_pvz_p);
 		can_dc_mon.cd(11);can_dc_mon.draw(H_dcm_pvz_theta);
-		
+
 		can_dc_mon.cd(12);can_dc_mon.draw(H_dcp_theta_phi);
 		can_dc_mon.cd(13);can_dc_mon.draw(H_dcp_theta_mom);
 		can_dc_mon.cd(14);can_dc_mon.draw(H_dcp_phi_mom);
 		can_dc_mon.cd(15);can_dc_mon.draw(H_dcp_vz_phi);
 		can_dc_mon.cd(16);can_dc_mon.draw(H_dcp_vz_p);
 		can_dc_mon.cd(17);can_dc_mon.draw(H_dcp_vz_theta);
-		
+
 		can_dc_mon.cd(18);can_dc_mon.draw(H_dcp_R1th_R1ph);
 		can_dc_mon.cd(19);can_dc_mon.draw(H_dcp_R1the_mom);
 		can_dc_mon.cd(20);can_dc_mon.draw(H_dcp_R1ph_mom);
 		can_dc_mon.cd(21);can_dc_mon.draw(H_dcp_pvz_phi);
 		can_dc_mon.cd(22);can_dc_mon.draw(H_dcp_pvz_p);
-		can_dc_mon.cd(23);can_dc_mon.draw(H_dcp_pvz_theta);	
-		
+		can_dc_mon.cd(23);can_dc_mon.draw(H_dcp_pvz_theta);
+
 		for(int i=0;i<H_negHBTrk_sect.getAxis().getNBins(); i++){
 			double bincontent =  H_negHBTrk_sect.getBinContent(i);
 			H_negHBTrk_sect.setBinContent(i,bincontent/Nelecs);
@@ -4300,6 +4404,27 @@ System.out.println("Beam energy = "+Ebeam);
 			can_dcp_vz_phi.save(String.format("plots/dc_p_vz_phi.png"));
 			System.out.println(String.format("save plots/dc_p_vz_phi.png"));
 		}
+		// Test drawing for dc_e_chi2 for electrons
+		// EmbeddedCanvas can_dce_chi2 = new EmbeddedCanvas();
+		// can_dce_chi2.setSize(4200,5400);
+		// can_dce_chi2.divide(3,2);
+		// can_dce_chi2.setAxisTitleSize(24);
+		// can_dce_chi2.setAxisFontSize(24);
+		// can_dce_chi2.setTitleSize(24);
+		// for(int s=0;s<7;s++){
+		// 	can_dce_chi2.cd(0+s);can_dce_chi2.draw(H_dce_chi2[s]);
+		// }
+		// if(runNum>0){
+		// 	if(!write_volatile)can_dce_chi2.save(String.format("plots"+runNum+"/dc_e_chi2.png"));
+		// 	if(write_volatile)can_dce_chi2.save(String.format("/volatile/clas12/rgb/spring19/plots"+runNum+"/dc_e_chi2.png"));
+		// 	System.out.println(String.format("save plots"+runNum+"/dc_e_chi2.png"));
+		// }
+		// else{
+		// 	can_dce_chi2.save(String.format("plots/dc_e_chi2.png"));
+		// 	System.out.println(String.format("save plots/dc_e_chi2.png"));
+		// }
+
+
 	}
         public void write() {
                 TDirectory dirout = new TDirectory();
@@ -4336,7 +4461,7 @@ System.out.println("Beam energy = "+Ebeam);
 		dirout.cd("/tof/");
 		dirout.addDataSet(H_TOF_vt_S1m,H_TOF_vt_S2m,H_TOF_vt_S3m,H_TOF_vt_S4m,H_TOF_vt_S5m,H_TOF_vt_S6m);
 		dirout.addDataSet(H_TOF_vt_S1p,H_TOF_vt_S2p,H_TOF_vt_S3p,H_TOF_vt_S4p,H_TOF_vt_S5p,H_TOF_vt_S6p);
-		dirout.addDataSet(H_pip_vtd, H_pim_vtd);		
+		dirout.addDataSet(H_pip_vtd, H_pim_vtd);
 		dirout.mkdir("/dc/");
 		dirout.cd("/dc/");
 		dirout.addDataSet(H_dcm_theta_phi,H_dcm_theta_mom,H_dcm_phi_mom,H_dcm_vz_phi,H_dcm_vz_p,H_dcm_vz_theta);
@@ -4345,16 +4470,16 @@ System.out.println("Beam energy = "+Ebeam);
 		dirout.addDataSet(H_dcp_R1th_R1ph,H_dcp_R1the_mom,H_dcp_R1ph_mom,H_dcp_pvz_phi,H_dcp_pvz_p,H_dcp_pvz_theta);
 		dirout.addDataSet(H_negHBTrk_sect,H_negTBTrk_sect,H_posHBTrk_sect,H_posTBTrk_sect,H_dcm_phiK_mom,H_dcp_phiK_mom,H_dcm_pvt_pvz,H_dcp_pvt_pvz);
 		dirout.addDataSet(H_negRECHB_sect , H_posRECHB_sect , H_negREC_sect , H_posREC_sect);
-		for(int s=0;s<6;s++)dirout.addDataSet(H_dcp_vz[s],H_dcp_chi2[s],H_dcm_vz[s],H_dcm_chi2[s]);;//,H_dce_chi2[s]);
+		for(int s=0;s<6;s++)dirout.addDataSet(H_dcp_vz[s],H_dcp_chi2[s],H_dcm_vz[s],H_dcm_chi2[s],H_dce_chi2[s]);
 		dirout.mkdir("/trig/");
 		dirout.cd("/trig/");
 		dirout.addDataSet(H_trig_sector_count,H_trig_sector_elec,H_trig_sector_elec_rat,H_rand_trig_sector_count,H_Nclust_ev,H_clust1_E,H_clust2_E);
 		dirout.addDataSet(H_trig_sector_prot,H_trig_sector_piplus,H_trig_sector_piminus,H_trig_sector_kplus,H_trig_sector_kminus,H_trig_sector_photon,H_trig_sector_neutron);
 		dirout.addDataSet(H_muon_trig_sector_count,H_trig_sector_muon,H_trig_sector_muon_rat,H_trig_sector_muontrack,H_trig_sector_muontrack_rat);
                 if (H_trig_sector_deut != null) dirout.addDataSet(H_trig_sector_deut);
-		dirout.addDataSet(H_trig_sector_prot_rat,H_trig_sector_piplus_rat,H_trig_sector_piminus_rat,H_trig_sector_kplus_rat,H_trig_sector_kminus_rat,H_trig_sector_photon_rat,H_trig_sector_neutron_rat);
-                if (H_trig_sector_deut_rat != null) dirout.addDataSet(H_trig_sector_deut_rat);
 		dirout.addDataSet(H_trig_sector_prot_rat,H_trig_sector_piplus_rat,H_trig_sector_piminus_rat,H_trig_sector_kplus_rat,H_trig_sector_kminus_rat,H_trig_sector_photon_rat,H_trig_sector_neutron_rat, H_trig_sector_positive_rat, H_trig_sector_negative_rat, H_trig_sector_neutral_rat);
+                if (H_trig_sector_deut_rat != null) dirout.addDataSet(H_trig_sector_deut_rat);
+		dirout.addDataSet(H_trig_central_prot_rat, H_trig_central_deut_rat, H_trig_central_piplus_rat,H_trig_central_piminus_rat,H_trig_central_kplus_rat,H_trig_central_kminus_rat);
 
 		dirout.addDataSet(H_trig_S1_ETOT_E,H_trig_S2_ETOT_E,H_trig_S3_ETOT_E,H_trig_S4_ETOT_E,H_trig_S5_ETOT_E,H_trig_S6_ETOT_E);
 		dirout.addDataSet(H_trig_S1_ECAL_E,H_trig_S2_ECAL_E,H_trig_S3_ECAL_E,H_trig_S4_ECAL_E,H_trig_S5_ECAL_E,H_trig_S6_ECAL_E);
@@ -4369,23 +4494,26 @@ System.out.println("Beam energy = "+Ebeam);
 		dirout.mkdir("/cvt/");
 		dirout.cd("/cvt/");
 		dirout.addDataSet(H_CVT_chi2,H_CVT_ndf,H_CVT_ft,H_CVT_pt,H_CVT_pf,H_CVT_zf,H_CVT_zp,H_CVT_zt,H_CVT_e_corr_vz);
-		dirout.addDataSet(H_CVT_z, H_CVT_z_pos, H_CVT_z_neg, H_CVT_chi2_pos, H_CVT_chi2_neg);//,H_CVT_chi2_elec);
+		dirout.addDataSet(H_CVT_z, H_CVT_z_pos, H_CVT_z_neg, H_CVT_chi2_pos, H_CVT_chi2_neg);
+		dirout.addDataSet(hbstOccupancy,hbmtOccupancy,htrks,hpostrks,hnegtrks,hndf,hchi2norm,hp,hpt,hpathlen,hbstOnTrkLayers,hbmtOnTrkLayers,hpostrks_rat, hnegtrks_rat); //checkpoint_central
 		dirout.mkdir("/RF/"); // saving pi_RFtime1's
 		dirout.cd("/RF/");
 		for(int s=0;s<6;s++){
-			dirout.addDataSet(H_e_RFtime1_S[s], H_pip_RFtime1_S[s], H_pim_RFtime1_S[s]);
+			dirout.addDataSet(H_e_RFtime1_S[s]);
+			dirout.addDataSet(H_pip_RFtime1_S[s]);
+			dirout.addDataSet(H_pim_RFtime1_S[s]);
 		}
 		dirout.addDataSet(H_RFtimediff);
-		//dirout.mkdir("");
+				//dirout.mkdir("");
 		//dirout.cd("");
 
 		if(write_volatile)if(runNum>0)dirout.writeFile("/volatile/clas12/rgb/spring19/plots"+runNum+"/out_monitor_"+runNum+".hipo");
-		
+
 		if(!write_volatile){
 			if(runNum>0)dirout.writeFile("plots"+runNum+"/out_monitor_"+runNum+".hipo");
 			else dirout.writeFile("plots/out_monitor.hipo");
 		}
-		
+
 		//dirout.addDataSet(H_XY_ECal,H_ESampl_ECal);
 		//g_m_ESampl_ECal.setName("g_m_ESampl_ECal");
 		//g_s_ESampl_ECal.setName("g_s_ESampl_ECal");
@@ -4393,22 +4521,32 @@ System.out.println("Beam energy = "+Ebeam);
         }
 ////////////////////////////////////////////////
 
-	public void ratio_to_trigger(){
-		H_trig_sector_elec_rat.divide(H_trig_sector_count);
-		H_trig_sector_prot_rat.divide(H_trig_sector_count);
-		H_trig_sector_piplus_rat.divide(H_trig_sector_count);
-		H_trig_sector_piminus_rat.divide(H_trig_sector_count);
-		H_trig_sector_kplus_rat.divide(H_trig_sector_count);
-		H_trig_sector_kminus_rat.divide(H_trig_sector_count);
-		H_trig_sector_photon_rat.divide(H_trig_sector_count);
-		H_trig_sector_neutron_rat.divide(H_trig_sector_count);
-		H_trig_sector_deut_rat.divide(H_trig_sector_count);
-		H_trig_sector_positive_rat.divide(H_trig_sector_count);
-		H_trig_sector_negative_rat.divide(H_trig_sector_count);
-		H_trig_sector_neutral_rat.divide(H_trig_sector_count);
-	}
+		public void ratio_to_trigger(){
+			H_trig_sector_elec_rat.divide(H_trig_sector_count);
+			H_trig_sector_prot_rat.divide(H_trig_sector_count);
+			H_trig_sector_piplus_rat.divide(H_trig_sector_count);
+			H_trig_sector_piminus_rat.divide(H_trig_sector_count);
+			H_trig_sector_kplus_rat.divide(H_trig_sector_count);
+			H_trig_sector_kminus_rat.divide(H_trig_sector_count);
+			H_trig_sector_photon_rat.divide(H_trig_sector_count);
+			H_trig_sector_neutron_rat.divide(H_trig_sector_count);
+			H_trig_sector_deut_rat.divide(H_trig_sector_count);
+			H_trig_sector_positive_rat.divide(H_trig_sector_count);
+			H_trig_sector_negative_rat.divide(H_trig_sector_count);
+			H_trig_sector_neutral_rat.divide(H_trig_sector_count);
+			H_trig_sector_muon_rat.divide(H_muon_trig_sector_count);
 
-
+			//checkpoint_central
+			H_trig_central_prot_rat.divide(Ntrigs);
+			H_trig_central_piplus_rat.divide(Ntrigs);
+			H_trig_central_piminus_rat.divide(Ntrigs);
+			H_trig_central_kplus_rat.divide(Ntrigs);
+			H_trig_central_kminus_rat.divide(Ntrigs);
+			H_trig_central_deut_rat.divide(Ntrigs);
+			//checkpoint_central
+			hpostrks_rat.divide(Ntrigs);
+			hnegtrks_rat.divide(Ntrigs);
+		}
         public static void main(String[] args) {
                 System.setProperty("java.awt.headless", "true");
 		GStyle.setPalette("kRainBow");
@@ -4472,4 +4610,3 @@ System.out.println("Beam energy = "+Ebeam);
 		ana.plot();
         }
 }
-
