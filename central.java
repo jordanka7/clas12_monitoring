@@ -27,7 +27,6 @@ public class central {
 	public H2F H_CTOF_pos, H_CTOF_edep_phi, H_CTOF_edep_z, H_CTOF_path_mom;
 	public H2F H_vz_DC_CVT, H_phi_DC_CVT, H_CVT_CTOF_phi, H_CVT_CTOF_z, H_CVT_t_STT, H_CVT_t_pad;
 	public H1F[] H_CVT_t;
-	public H1F H_CVT_t_pos, H_CVT_t_neg;
 	public central(int reqrunNum, boolean reqTimeBased, boolean reqwrite_volatile) {
 		runNum = reqrunNum;userTimeBased=reqTimeBased;
 		write_volatile = reqwrite_volatile;
@@ -143,15 +142,6 @@ public class central {
 			H_CVT_t[p].setTitle(String.format("pad %d time",p+1));
 			H_CVT_t[p].setTitleX("t (ns)");
 		}
-
-		H_CVT_t_pos = new H1F("H_CVT_t_pos","H_CVT_t_pos",250,MinCTOF,MaxCTOF);
-		H_CVT_t_pos.setTitle("integrated over all pads CTOF time, positive");
-		H_CVT_t_pos.setTitleX("t (ns)");
-
-		H_CVT_t_neg = new H1F("H_CVT_t_neg","H_CVT_t_neg",250,MinCTOF,MaxCTOF);
-		H_CVT_t_neg.setTitle("integrated over all pads CTOF time, negative");
-		H_CVT_t_neg.setTitleX("t (ns)");
-
 	}
 	public double Vangle(Vector3 v1, Vector3 v2){ 
 		double res = 0; 
@@ -189,7 +179,6 @@ public class central {
 					float cy = CVTbank.getFloat("c_y",iCVT)*0.1f;
 					float cz = CVTbank.getFloat("c_z",iCVT)*0.1f;
 					float cphi = (float)Math.toDegrees(Math.atan2(cy,cx));
-					int charge = CVTbank.getInt("q",iCVT);
 					int pad = CTOFbank.getInt("component",iCTOF);
 					float x = CTOFbank.getFloat("x",iCTOF)*0.1f;
 					float y = CTOFbank.getFloat("y",iCTOF)*0.1f;
@@ -216,8 +205,6 @@ public class central {
 						H_CVT_t_pad.fill(pad,CTOFTime-STT);
 						H_CVT_t[pad].fill(CTOFTime-STT);
 						H_CVT_t[49].fill(CTOFTime-STT);
-						if (charge>0) H_CVT_t_pos.fill(CTOFTime-STT);
-						if (charge<0) H_CVT_t_neg.fill(CTOFTime-STT);
 						matched = true;
 					}
 				}
@@ -244,7 +231,7 @@ public class central {
 	public void plot() {
 		EmbeddedCanvas can_central  = new EmbeddedCanvas();
                 can_central.setSize(2000,3000);
-                can_central.divide(4,7);
+                can_central.divide(4,6);
                 can_central.setAxisTitleSize(18);
                 can_central.setAxisFontSize(18);
                 can_central.setTitleSize(18);
@@ -261,10 +248,8 @@ public class central {
 		can_central.cd(10);can_central.draw(H_CVT_t[1]);for(int p=1;p<49;p++)can_central.draw(H_CVT_t[p],"same");
 		can_central.getPad(10).getAxisX().setRange(MinCTOF,MaxCTOF);
 		can_central.cd(11);can_central.draw(H_CVT_t[49]);
-		can_central.cd(12);can_central.draw(H_CVT_t_pos);//test drawing for CTOF time for positive
-		can_central.cd(13);can_central.draw(H_CVT_t_neg);//test drawing for CTOF time for negative
 		for(int p=0;p<12;p++){
-			can_central.cd(12+2+p);can_central.draw(H_CVT_t[16+p]);
+			can_central.cd(12+p);can_central.draw(H_CVT_t[16+p]);
 		}
 		if(runNum>0){
 			if(!write_volatile)can_central.save(String.format("plots"+runNum+"/central.png"));
@@ -292,7 +277,7 @@ public class central {
                 dirout.cd("/ctof/");
                 dirout.addDataSet(H_CVT_t_pad,H_CTOF_edep_phi);
                 for(int p=0;p<50;p++)dirout.addDataSet(H_CVT_t[p]);
-                dirout.addDataSet(H_CVT_t_pos, H_CVT_t_neg);
+                
 		if(write_volatile)if(runNum>0)dirout.writeFile("/volatile/clas12/rga/spring18/plots"+runNum+"/out_CTOF_"+runNum+".hipo");
                 
 		if(!write_volatile){

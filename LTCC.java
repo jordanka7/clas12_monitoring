@@ -48,16 +48,6 @@ public class LTCC{
                 if(reqEb>7.1 && reqEb<9)EBeam=7.55f;
                 if(reqEb>9)EBeam=10.6f;
 		trigger_bits = new boolean[32];
-		H_e_theta_mom = new H2F[7];
-		H_e_phi_mom = new H2F[7];
-		H_e_theta_phi = new H2F[7];
-		H_e_vz = new H2F[7];
-		H_e_sampl = new H2F[7];
-		H_e_vtime = new H2F[7];
-		H_e_trk_chi2 = new H2F[7];
-		H_e_LTCC = new H2F[7];
-		H_e_Ring_theta = new H2F[7];
-		H_e_side_phi = new H2F[7];
 		H_pion_nphePMT = new H2F[6];
 		H_e_nphePMT = new H2F[6];
 		H_LTCC_PMTocc = new H1F[6];
@@ -83,126 +73,13 @@ public class LTCC{
 		for(int k = 0; k < bankadc.rows(); k++){
 			int pmt=0;
                         int sect = bankadc.getInt("sector",k)-1;
+			if (bankadc.getByte("layer",k)!=1)System.out.println("Layer = "+bankadc.getByte("layer",k)+" Order = "+bankadc.getByte("order",k)+" Sector = "+sect);
 			if (bankadc.getByte("order",k) == 0) pmt = bankadc.getShort("component",k);
-			else if (bankadc.getByte("order",k) == 1) pmt = bankadc.getShort("component",k)+18;
+			if (bankadc.getByte("order",k) == 1) pmt = bankadc.getShort("component",k)+18;
 			H_LTCC_PMTocc[sect].fill(pmt);
 		}
 	}
 
-        public int makeElectron(DataBank bank){
-                for(int k = 0; k < bank.rows(); k++){
-                        int pid = bank.getInt("pid", k);
-                        byte q = bank.getByte("charge", k);
-                        float px = bank.getFloat("px", k);
-                        float py = bank.getFloat("py", k);
-                        float pz = bank.getFloat("pz", k);
-                        int status = bank.getShort("status", k);
-                        boolean inDC = (status>=2000 && status<4000);
-                        e_mom = (float)Math.sqrt(px*px+py*py+pz*pz);
-			e_theta = (float)Math.toDegrees(Math.acos(pz/e_mom));
-			e_vz = bank.getFloat("vz", k);
-                        if(inDC && pid == 11 && e_mom>EBeam*0.15 && e_theta>6.5 && Math.abs(e_vz)<20){
-                                e_phi = (float)Math.toDegrees(Math.atan2(py,px));
-                                e_vx = bank.getFloat("vx", k);
-                                e_vy = bank.getFloat("vy", k);
-                                return k;
-                        }
-                }
-                return -1;
-        }    
-        public void getElecEBECal(DataBank bank){
-                e_ecal_E=0;
-		for(int k = 0; k < bank.rows(); k++){
-                        int det = bank.getInt("layer", k);
-                        short pind = bank.getShort("pindex",k);
-                        if(det==1 && pind==e_part_ind){
-                                e_ecal_X = bank.getFloat("x",k);
-                                e_ecal_Y = bank.getFloat("y",k);
-                                e_ecal_Z = bank.getFloat("z",k);
-                                e_ecal_E += bank.getFloat("energy",k);
-                                e_pcal_e += bank.getFloat("energy",k);
-                                e_sect = bank.getByte("sector",k);
-                        }
-                        if(det==4 && pind==e_part_ind){
-                                e_ecal_E += bank.getFloat("energy",k);
-                                e_etot_e += bank.getFloat("energy",k);
-                        }
-                        if(det==7 && pind==e_part_ind){
-                                e_ecal_E += bank.getFloat("energy",k);
-                                e_etot_e += bank.getFloat("energy",k);
-                        }
-                }
-        }
-        public void getElecEBCC(DataBank bank){
-                for(int k = 0; k < bank.rows(); k++){
-                        short pind = bank.getShort("pindex",k);
-                        if(bank.getByte("detector",k)==15 && pind==e_part_ind){
-                                //H_e_LTCC_nphe.fill(bank.getShort("nphe",k));
-                                //H_e_LTCC_xy.fill(bank.getFloat("x",k) , bank.getFloat("y",k));
-                                //e_LTCC = (float)bank.getShort("nphe",k);
-                                e_HTCC = (float)bank.getFloat("nphe",k);
-                                e_HTCC_X = bank.getFloat("x",k);
-                                e_HTCC_Y = bank.getFloat("y",k);
-                                e_HTCC_Z = bank.getFloat("z",k);
-
-                        }    
-                        if(bank.getByte("detector",k)==16 && pind==e_part_ind){
-                                //H_e_LTCC_nphe.fill(bank.getShort("nphe",k));
-                                //H_e_LTCC_xy.fill(bank.getFloat("x",k) , bank.getFloat("y",k));
-                                //e_LTCC = (float)bank.getShort("nphe",k);
-                                e_LTCC = (float)bank.getFloat("nphe",k);
-                        }    
-                }    
-        }
-        public void getElecEBTOF(DataBank bank){
-                for(int k = 0; k < bank.rows(); k++){
-                        short pind = bank.getShort("pindex",k);
-                        if(pind==e_part_ind && bank.getFloat("energy",k)>5){
-                                //H_e_TOF_xy.fill(bank.getFloat("x",k) , bank.getFloat("y",k));
-                                //H_e_TOF_t_path.fill(bank.getFloat("time",k),bank.getFloat("path",k));
-                                e_vert_time = bank.getFloat("time",k) - bank.getFloat("path",k)/29.98f;
-                                float time = (e_vert_time-RFtime+1.002f)%2.004f;time -= 1.002f;
-                                e_vert_time_RF = time;
-                                //H_e_vt1.fill(e_vert_time_RF);
-                                //H_e_vt2.fill(time2);
-                                e_TOF_X = bank.getFloat("x",k);
-                                e_TOF_Y = bank.getFloat("y",k);
-                                e_TOF_Z = bank.getFloat("z",k);
-                        }    
-                }    
-        }    
-        public void fillEBTrack(DataBank bank){
-                e_track_ind=-1;
-                for(int k = 0; k < bank.rows(); k++){
-                        short pind = bank.getShort("pindex",k);
-                        if(pind==e_part_ind){
-                                e_track_chi2 =  bank.getFloat("chi2",k);
-                                e_track_ind = bank.getShort("index",k);
-                        }    
-                }    
-        }    
-        public void getTrigTBTrack(DataBank bank){
-                 if(e_track_ind>-1 && e_track_ind<bank.rows() ){
-                         e_track_chi2 = bank.getFloat("chi2" , e_track_ind);
-                         e_sect = bank.getInt("sector", e_track_ind);
-                 }
-        }
-        public void getTBTrack(DataBank bank){ 
-                 if(e_track_ind>-1 && e_track_ind<bank.rows()){
-                         e_track_chi2 = bank.getFloat("chi2" , e_track_ind);
-                         e_sect = bank.getInt("sector", e_track_ind);
-			 e_DCR2_X = bank.getFloat("t1_x" , e_track_ind);
-			 e_DCR2_Y = bank.getFloat("t1_y" , e_track_ind);
-			 e_DCR2_Z = bank.getFloat("t1_z" , e_track_ind);
-			 e_DCR2_uX = bank.getFloat("t1_px" , e_track_ind);
-			 e_DCR2_uY = bank.getFloat("t1_py" , e_track_ind);
-			 e_DCR2_uZ = bank.getFloat("t1_pz" , e_track_ind);
-			 Vector3 vDCR2pos = new Vector3(e_DCR2_X,e_DCR2_Y,e_DCR2_Z);
-			 vDCR2pos.rotateZ( -3.141597f*(e_sect-1)/3f );
-			 e_DCR2_the = (float)Math.toDegrees(vDCR2pos.theta());
-			 e_DCR2_phi = (float)Math.toDegrees(vDCR2pos.phi());
-                 }    
-        }
 
         public int isLTCCmatch(DataBank LTCCbank, int index){
 		int indexltcc=-1;
@@ -285,7 +162,7 @@ public class LTCC{
 				for (int j=0;j<bankadc.rows();j++) {
 					if (bankadc.getInt("sector",j) == sect[i]) {
 						if (bankadc.getByte("order",j) == 0) pmt = bankadc.getShort("component",j);
-						else if (bankadc.getByte("order",j) == 1) pmt = bankadc.getShort("component",j)+18;
+						if (bankadc.getByte("order",j) == 1) pmt = bankadc.getShort("component",j)+18;
 						nphe = bankrecdet.getFloat("nphe",index[i]);
 						H_pion_nphePMT[i].fill(pmt,nphe);
 						//System.out.println("sector = "+(i+1)+" adc bank row = "+j+" pmt = "+pmt+" Nphe = "+nphe);
@@ -348,7 +225,7 @@ public class LTCC{
 				for (int j=0;j<bankadc.rows();j++) {
 					if (bankadc.getInt("sector",j) == sect[i]) {
 						if (bankadc.getByte("order",j) == 0) pmt = bankadc.getShort("component",j);
-						else if (bankadc.getByte("order",j) == 1) pmt = bankadc.getShort("component",j)+18;
+						if (bankadc.getByte("order",j) == 1) pmt = bankadc.getShort("component",j)+18;
 						nphe = bankrecdet.getFloat("nphe",index[i]);
 						H_e_nphePMT[i].fill(pmt,nphe);
 						//System.out.println("sector = "+(i+1)+" adc bank row = "+j+" pmt = "+pmt+" Nphe = "+nphe);
@@ -356,83 +233,6 @@ public class LTCC{
                                 }
 			}
 
-		}
-	}
-	public void LTCCadc(DataBank bank){
-		int bestmatch = -1;
-		float matchnadc = 0;
-		for(int r=0;r<bank.rows();r++){
-			int sect = bank.getInt("sector",r);
-			int side = bank.getInt("layer",r);
-			int ring = bank.getInt("component",r);
-			int adcv = bank.getInt("ADC",r);
-			int peds = bank.getInt("ped",r);
-			int counter = (ring-1) + 4*( (side-1) + 2*(sect-1) );
-			if(counter>47)System.out.println("ERROR COUNTING PMTS "+counter);
-			//else H_LTCC_adc[counter].fill(adcv-peds+100);
-			else if(e_sect==sect){
-				boolean geomMatch = false;
-				geomMatch = ( Math.abs( 1f*ring - (1f + 3f*(e_DCR2_the-10f)/22.5f) ) < 0.75f) && (e_DCR2_phi*(side-1.5f)>0);
-				if(geomMatch && adcv>matchnadc){
-					//H_LTCC_adc[counter].fill(adcv+100);
-					matchnadc = adcv;
-					bestmatch = r;
-				}
-			}
-		}
-		if(bestmatch>-1){
-			int r = bestmatch;
-			int counter = (bank.getInt("component",r)-1) + 4*( (bank.getInt("layer",r)-1) + 2*(bank.getInt("sector",r)-1) );
-			H_LTCC_adc[counter].fill(bank.getInt("ADC",r)+100);
-		}
-	}
-	public void LTCCrec(DataBank bank, DataBank hbank){
-		int bestmatch = -1;
-		float matchnphe = 0;
-		for(int r=0;r<bank.rows();r++){
-			int IDhit = bank.getInt("id",r);
-			int nhits = bank.getInt("nhits",r);
-			float nphe = bank.getFloat("nphe",r);
-			if(nhits==1){
-				int sect = hbank.getInt("sector",IDhit);
-				int side = hbank.getInt("layer",IDhit);
-				int ring = hbank.getInt("component",IDhit);
-				int counter = (ring-1) + 4*( (side-1) + 2*(sect-1) );
-				if(e_sect==sect){
-					boolean geomMatch = false;
-					geomMatch = ( Math.abs( 1f*ring - (1f + 3f*(e_DCR2_the-10f)/22.5f) ) < 0.33f) && (e_DCR2_phi*(side-1.5f)>0);
-					if(geomMatch && nphe>matchnphe){
-						matchnphe=nphe;bestmatch=r;
-					}
-				}
-			}
-		}
-		if(bestmatch>-1){
-			int r = bestmatch;
-			int IDhit = bank.getInt("id",r);
-			int nhits = bank.getInt("nhits",r);
-			float nphe = bank.getFloat("nphe",r);
-			int sect = hbank.getInt("sector",IDhit);
-			int side = hbank.getInt("layer",IDhit);
-			int ring = hbank.getInt("component",IDhit);
-			int counter = (ring-1) + 4*( (side-1) + 2*(sect-1) );
-			H_LTCC_nphe[counter].fill(nphe);
-			H_e_Ring_theta[sect-1].fill(e_DCR2_the,ring);
-			H_e_side_phi[sect-1].fill(e_DCR2_phi,side-1.5f);
-			H_e_Ring_theta[6].fill(e_DCR2_the,ring);
-			H_e_side_phi[6].fill(e_DCR2_phi,side-1.5f);
-		
-		}
-		for(int r=0;r<bank.rows();r++){
-			if(r!=bestmatch){
-				int IDhit = bank.getInt("id",r);
-				float nphe = bank.getFloat("nphe",r);
-				int sect = hbank.getInt("sector",IDhit);
-				int side = hbank.getInt("layer",IDhit);
-				int ring = hbank.getInt("component",IDhit);
-				int counter = (ring-1) + 4*( (side-1) + 2*(sect-1) );
-				H_LTCC2_nphe[counter].fill(nphe);
-			}
 		}
 	}
 	public void processEvent(DataEvent event){
@@ -448,7 +248,7 @@ public class LTCC{
 				}    
 			}
                 DataBank partBank = null, trackBank = null, trackDetBank = null, ecalBank = null, cherenkovBank = null, scintillBank = null;
-		DataBank trajBank = null, ltccadcBank = null;
+		DataBank trajBank = null, ltccadcBank = null, ltccClusters = null;
                 if(userTimeBased){
                         if(event.hasBank("REC::Particle"))partBank = event.getBank("REC::Particle");
                         if(event.hasBank("REC::Track"))trackBank = event.getBank("REC::Track");
@@ -458,6 +258,7 @@ public class LTCC{
                         if(event.hasBank("REC::Scintillator"))scintillBank = event.getBank("REC::Scintillator");
 			if(event.hasBank("REC::Traj"))trajBank = event.getBank("REC::Traj");
 			if(event.hasBank("LTCC::adc"))ltccadcBank = event.getBank("LTCC::adc");
+			if(event.hasBank("LTCC::clusters"))ltccClusters = event.getBank("LTCC::clusters");
                 }
                 if(!userTimeBased){
                         if(event.hasBank("RECHB::Particle"))partBank = event.getBank("RECHB::Particle");
@@ -468,20 +269,10 @@ public class LTCC{
                         if(event.hasBank("RECHB::Scintillator"))scintillBank = event.getBank("RECHB::Scintillator");
 			if(event.hasBank("RECHB::Traj"))trajBank = event.getBank("RECHB::Traj");
 			if(event.hasBank("LTCC::adc"))ltccadcBank = event.getBank("LTCC::adc");
+			if(event.hasBank("LTCC::clusters"))ltccClusters = event.getBank("LTCC::clusters");
                 }
 
-			if( (trigger_bits[1] || trigger_bits[2] || trigger_bits[3] || trigger_bits[4] || trigger_bits[5] || trigger_bits[6]) && partBank!=null)e_part_ind = makeElectron(partBank);
-			if(e_part_ind==-1)return;
-			if(trackBank!=null)fillEBTrack(trackBank);
-			if(ecalBank!=null)getElecEBECal(ecalBank);
-			if(cherenkovBank!=null)getElecEBCC(cherenkovBank);
-			if(scintillBank!=null)getElecEBTOF(scintillBank);
-			if(trackDetBank!=null)getTBTrack(trackDetBank);
-			float Q2 = (float) (4 * EBeam * e_mom * Math.pow(Math.sin(Math.toRadians(e_theta) / 2),2));
-			if(e_mom>EBeam*0.15 && e_theta>6.5 && Q2>0.2 *EBeam/11 && Math.abs(e_vz)<20 && e_track_chi2<500 && e_ecal_E/e_mom>0.15){
-				//if(event.hasBank("LTCC::adc"))LTCCadc(event.getBank("LTCC::adc"));
-				//if(event.hasBank("LTCC::rec")&&event.hasBank("LTCC::adc"))LTCCrec(event.getBank("LTCC::rec"),event.getBank("LTCC::adc"));
-			}
+			//if (ltccClusters!=null)System.out.println("LTCC Clusters Bank exists");
 			if(partBank!=null && cherenkovBank!=null && ltccadcBank!=null){
 				fill_pion_PMT_Histos(event,partBank,cherenkovBank,ltccadcBank,211);
 				fill_pion_PMT_Histos(event,partBank,cherenkovBank,ltccadcBank,-211);

@@ -36,12 +36,11 @@ public class HTCC{
 	public HTCC(int reqR, float reqEb, boolean reqTimeBased, boolean reqwrite_volatile){
         	runNum = reqR;userTimeBased=reqTimeBased;
 		write_volatile = reqwrite_volatile;
-		//EBeam = 2.2f;
-                //if(reqEb>0 && reqEb<4)EBeam=2.22f;
-                //if(reqEb>4 && reqEb<7.1)EBeam=6.42f;
-                //if(reqEb>7.1 && reqEb<9)EBeam=7.55f;
-                //if(reqEb>9)EBeam=10.6f;
-                EBeam = reqEb;
+		EBeam = 2.2f;
+                if(reqEb>0 && reqEb<4)EBeam=2.22f;
+                if(reqEb>4 && reqEb<7.1)EBeam=6.42f;
+                if(reqEb>7.1 && reqEb<9)EBeam=7.55f;
+                if(reqEb>9)EBeam=10.6f;
 		trigger_bits = new boolean[32];
 		H_e_theta_mom = new H2F[7];
 		H_e_phi_mom = new H2F[7];
@@ -98,7 +97,7 @@ public class HTCC{
 					String histitle = String.format("HTCC ADC S%d, Ring %d, %s",s+1,r+1,stringSide);
 					H_HTCC_adc[counter] = new H1F(String.format("H_HTCC_adc%d",s+1),histitle,100,0,10000);
 					histitle = String.format("HTCC NPHE S%d, Ring %d, %s",s+1,r+1,stringSide);
-					H_HTCC_nphe[counter] = new H1F(String.format("H_HTCC_nphe_s%d_r%d_side%d",s+1,r+1,side+1),histitle,100,0,50); //title ch
+					H_HTCC_nphe[counter] = new H1F(String.format("H_HTCC_nphe%d",s+1),histitle,100,0,50);
 					histitle = String.format("HTCC UNMATCHED NPHE S%d, Ring %d, %s",s+1,r+1,stringSide);
 					H_HTCC2_nphe[counter] = new H1F(String.format("H_HTCC2_nphe%d",s+1),histitle,100,0,50);
 				}
@@ -130,6 +129,7 @@ public class HTCC{
                 }
                 return -1;
         }    
+
         public void getElecEBECal(DataBank bank){
                 e_ecal_E=0;
 		for(int k = 0; k < bank.rows(); k++){
@@ -366,7 +366,7 @@ public class HTCC{
         public void plot() {
 		EmbeddedCanvas can_e_HTCC  = new EmbeddedCanvas();
 		can_e_HTCC.setSize(3500,4000);
-		can_e_HTCC.divide(7,10);
+		can_e_HTCC.divide(7,8);
 		can_e_HTCC.setAxisTitleSize(18);
 		can_e_HTCC.setAxisFontSize(18);
 		can_e_HTCC.setTitleSize(18);
@@ -379,10 +379,6 @@ public class HTCC{
 			can_e_HTCC.cd(35+s);can_e_HTCC.draw(H_e_vtime[s]);
 			can_e_HTCC.cd(42+s);can_e_HTCC.draw(H_e_trk_chi2[s]);
 			can_e_HTCC.cd(49+s);can_e_HTCC.draw(H_e_HTCC[s]);
-			can_e_HTCC.cd(56+s);can_e_HTCC.draw(H_e_Ring_theta[s]);
-			can_e_HTCC.getPad(56+s).getAxisZ().setLog(true);
-			can_e_HTCC.cd(63+s);can_e_HTCC.draw(H_e_side_phi[s]);
-			can_e_HTCC.getPad(63+s).getAxisZ().setLog(true);
 		}
 		if(runNum>0){
 			if(!write_volatile)can_e_HTCC.save(String.format("plots"+runNum+"/HTCC_e.png"));
@@ -461,7 +457,7 @@ public class HTCC{
                 if(args.length>1)filelist = args[1];
                 int maxevents = 20000000;
                 if(args.length>2)maxevents=Integer.parseInt(args[2]);
-		float Eb =10.2f;//10.6f;
+		float Eb =6.42f;//10.6f;
                 if(args.length>3)Eb=Float.parseFloat(args[3]);
 		if(args.length>4)if(Integer.parseInt(args[4])==0)useTB=false;
                 HTCC ana = new HTCC(runNum,Eb,useTB,useVolatile);
@@ -499,23 +495,5 @@ public class HTCC{
                 }   
                 System.out.println("Total : " + count + " events");
                 ana.plot();
-		ana.write();
         }   
-
-	public void write() {
-		TDirectory dirout = new TDirectory();
-		dirout.mkdir("/HTCC/");
-		dirout.cd("/HTCC/");
-		for(int s=0;s<48;s++){
-						dirout.addDataSet(H_HTCC_nphe[s]);
-		}
-
-		if(!write_volatile){
-				if(runNum>0)dirout.writeFile("plots"+runNum+"/out_HTCC_"+runNum+".hipo");
-				else dirout.writeFile("plots/out_HTCC.hipo");
-		}
-	}
-
-
-
 }

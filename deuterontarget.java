@@ -52,14 +52,19 @@ public class deuterontarget {
 	public H2F H_pip_theta_phi, H_pip_theta_mom, H_pip_phi_mom, H_pip_vz_phi, H_pip_vz_theta, H_pip_vz_mom, H_pip_e_vt, H_pip_vz_ve;
 	public H2F H_pip_vz_ve_diff_mom, H_pip_vz_ve_diff_theta, H_pip_vz_ve_diff_phi, H_pip_vz_ve_diff_Dphi;
 	public H2F H_MM_epip_phi, H_pip_beta_p, H_pip_beta2_p, H_pip_vtd_mom, H_pip_vtd_theta, H_pip_vtd_phi;
-	public H2F H_epip_e_theta_phi, H_epip_e_theta_mom, H_epip_e_phi_mom, H_epip_xB_Q2, H_epip_e_W_Q2, H_epip_e_t_phi;
+	public H2F H_epip_e_theta_phi, H_epip_e_theta_mom, H_epip_e_phi_mom, H_epip_xB_Q2, H_epip_e_W_Q2, H_epip_e_t_phi; 
 
 	public H1F[] H_MM_epin_Spin, H_MM_epin_Se;
         public H1F H_MM_epin, H_MM_epin_zoom, H_pin_vtd, H_pin_vz_ve_diff, H_pin_Dphi;
         public H2F H_pin_theta_phi, H_pin_theta_mom, H_pin_phi_mom, H_pin_vz_phi, H_pin_vz_theta, H_pin_vz_mom, H_pin_e_vt, H_pin_vz_ve;
         public H2F H_pin_vz_ve_diff_mom, H_pin_vz_ve_diff_theta, H_pin_vz_ve_diff_phi, H_pin_vz_ve_diff_Dphi;
         public H2F H_MM_epin_phi, H_pin_beta_p, H_pin_beta2_p, H_pin_vtd_mom, H_pin_vtd_theta, H_pin_vtd_phi;
-        public H2F H_epin_e_theta_phi, H_epin_e_theta_mom, H_epin_e_phi_mom, H_epin_xB_Q2, H_epin_e_W_Q2, H_epin_e_t_phi;
+        public H2F H_epin_e_theta_phi, H_epin_e_theta_mom, H_epin_e_phi_mom, H_epin_xB_Q2, H_epin_e_W_Q2, H_epin_e_t_phi, H_MM_pin_mom;
+
+	public H1F[] H_MM_ep_sector;
+	public H1F H_MM_ep, H_MMep_zoomed;
+	public H2F H_MM_ep_pmom, H_MM_ep_pphi, H_MM_ep_ptheta, H_MM_ep_zvertex; 
+	public H2F H_ep_pbeta_mom, H_ep_pFTOFmass;
 
 	public H1F H_rho_IM, H_rho_MM, H_rho_MMD;
 	public H2F H_rho_Q2_xB, H_rho_Q2_W, H_rho_MMMM;
@@ -93,34 +98,35 @@ public class deuterontarget {
 		}
 
 		H_pin_vz_ve = new H2F("H_pin_vz_ve","H_pin_vz_ve",100,-5,15,100,-10,20);
-		H_pin_vz_ve.setTitle("#pi^+ vz vs e vz");
+		H_pin_vz_ve.setTitle("#pi^- vz vs e vz");
 		H_pin_vz_ve.setTitleX("e vz (cm)");
-		H_pin_vz_ve.setTitleY("#pi^+ vz (cm)");
+		H_pin_vz_ve.setTitleY("#pi^- vz (cm)");
 		H_pin_vz_ve_diff = new H1F("H_pin_vz_ve_diff","H_pin_vz_ve_diff",100,-10,20);
-		H_pin_vz_ve_diff.setTitle("#pi^+ e vz diff");
+		H_pin_vz_ve_diff.setTitle("#pi^- e vz diff");
 		H_pin_vz_ve_diff.setTitleX("#Delta vz (cm)");
 		H_pin_vz_ve_diff_mom = new H2F("H_pin_vz_ve_diff_mom","H_pin_vz_ve_diff_mom",100,0,6,100,-10,20);
-		H_pin_vz_ve_diff_mom.setTitle("#pi^+ e vz diff vs mom");
-		H_pin_vz_ve_diff_mom.setTitleX("#pi^+ mom (GeV)");
+		H_pin_vz_ve_diff_mom.setTitle("#pi^- e vz diff vs mom");
+		H_pin_vz_ve_diff_mom.setTitleX("#pi^- mom (GeV)");
 		H_pin_vz_ve_diff_mom.setTitleY("#Delta vz (cm)");
 		H_pin_vz_ve_diff_theta = new H2F("H_pin_vz_ve_diff_theta","H_pin_vz_ve_diff_theta",100,0,40,100,-10,20);
-		H_pin_vz_ve_diff_theta.setTitle("#pi^+ e vz diff vs #theta");
+		H_pin_vz_ve_diff_theta.setTitle("#pi^- e vz diff vs #theta");
 		H_pin_vz_ve_diff_theta.setTitleX("#theta (^o)");
 		H_pin_vz_ve_diff_theta.setTitleY("#Delta vz (cm)");
 		H_pin_vz_ve_diff_phi = new H2F("H_pin_vz_ve_diff_phi","H_pin_vz_ve_diff_phi",100,-180,180,100,-10,20);
-		H_pin_vz_ve_diff_phi.setTitle("#pi^+ e vz diff vs #phi");
+		H_pin_vz_ve_diff_phi.setTitle("#pi^- e vz diff vs #phi");
 		H_pin_vz_ve_diff_phi.setTitleX("#phi (^o)");
 		H_pin_vz_ve_diff_phi.setTitleY("#Delta vz (cm)");
 		H_pin_vz_ve_diff_Dphi = new H2F("H_pin_vz_ve_diff_Dphi","H_pin_vz_ve_diff_Dphi",100,-180,180,100,-10,20);
-		H_pin_vz_ve_diff_Dphi.setTitle("#pi^+ e vz diff vs #Delta#phi");
+		H_pin_vz_ve_diff_Dphi.setTitle("#pi^- e vz diff vs #Delta#phi");
 		H_pin_vz_ve_diff_Dphi.setTitleX("#Delta#phi (^o)");
 		H_pin_vz_ve_diff_Dphi.setTitleY("#Delta vz (cm)");
 		H_pin_Dphi = new H1F("H_pin_Dphi","H_pin_Dphi",100,-180,180);
-		H_pin_Dphi.setTitle("#pi^+ e #Delta#phi");
+		H_pin_Dphi.setTitle("#pi^- e #Delta#phi");
 		H_pin_Dphi.setTitleX("#Delta#phi (^o)");
 
 		H_MM_epin_Spin = new H1F[6];
 		H_MM_epin_Se = new H1F[6];
+		H_MM_ep_sector = new H1F[6];
 		for(int i=0;i<6;i++){
 			H_MM_epin_Spin[i] = new H1F(String.format("H_MM_epin_Spin%d",i+1),String.format("H_MM_epin_Spin%d",i+1),100,0,4);
 			H_MM_epin_Spin[i].setTitle(String.format("pi^- S%d MM #pi^- vs #phi",i+1));
@@ -128,6 +134,9 @@ public class deuterontarget {
 			H_MM_epin_Se[i] = new H1F(String.format("H_MM_epim_Se%d",i+1),String.format("H_MM_epim_Se%d",i+1),100,0,4);
 			H_MM_epin_Se[i].setTitle(String.format("e S%d MM #pi^- vs #phi",i+1));
 			H_MM_epin_Se[i].setTitleX("MM_{e#pi^-} (GeV)");
+			H_MM_ep_sector[i] = new H1F(String.format("H_MM_ep_sector%d",i+1),String.format("H_MM_ep_sector%d",i+1),200,0,4);
+			H_MM_ep_sector[i].setTitle(String.format("MX e'pX S%d",i+1));
+			H_MM_ep_sector[i].setTitleX(String.format("MX e'pX (GeV/c^2)",i+1));
 		}
 		H_pin_vtd = new H1F("H_pim_vtd","H_pim_vtd",100,-5,5);
 		H_pin_vtd.setTitle("Vertex time difference e #pi^-");
@@ -209,12 +218,15 @@ public class deuterontarget {
 		H_epin_e_t_phi.setTitle("-t vs #phi");
 		H_epin_e_t_phi.setTitleX("#phi (^o)");
 		H_epin_e_t_phi.setTitleY("-t (GeV)");
-		H_MM_epin_zoom = new H1F("H_MM_epin_phi_zoom","H_MM_epin_phi_zoom",100,0,2);
+		H_MM_epin_zoom = new H1F("H_MM_epin_zoom","H_MM_epin_zoom",100,0,2);
 		H_MM_epin_zoom.setTitle("Missing mass e#pi^-");
 		H_MM_epin_zoom.setTitleX("MM_{e#pi^-} (GeV)");
 		H_MM_epin = new H1F("H_MM_epin","H_MM_epin",100,-1,5);
 		H_MM_epin.setTitle("Missing Mass e#pi^-");
 		H_MM_epin.setTitleX("MM_{e#pi^-} (GeV)");
+		H_MM_pin_mom = new H2F("H_MM_pin_mom","H_MM_pin_mom",200,0,6,100,0,2);
+		H_MM_pin_mom.setTitleX("p_{#pi^-} (GeV/c");
+		H_MM_pin_mom.setTitleY("MM_{{e#pi^-} (GeV/c^2)");
 
 		H_rho_prot = new H2F("H_rho_prot","H_rho_prot",100,0,2,100,0,4);
 		H_rho_prot.setTitle("MM e#pi^+#pi^-(P Targ) vs IM #pi^+#pi^-");
@@ -260,6 +272,33 @@ public class deuterontarget {
                 H_e_vt2 = new H1F("H_e_vt2","H_e_vt2",100,-1,1);
                 H_e_vt2.setTitle("electron vertex time");
                 H_e_vt2.setTitleX("t (ns)");
+
+		H_MM_ep = new H1F("H_MM_ep","H_MM_ep",200,0,4);
+                H_MM_ep.setTitle(("MX e'pX");
+                H_MM_ep.setTitleX("MX e'pX (GeV/c^2)");
+		H_MM_ep_zoomed = new H1F("H_MM_ep","H_MM_ep",100,0,2);
+                H_MM_ep_zoomed.setTitle(("MX e'pX");
+                H_MM_ep_zoomed.setTitleX("MX e'pX (GeV/c^2)");
+		H_MM_ep_pmom = new H1F("H_MM_ep_pmom","H_MM_ep_pmom",200,0,10,200,0,4);
+                H_MM_ep_pmom.setTitle(("MX e'pX vs mom_p)");
+		H_MM_ep_pmom.setTitleX("p_prot (GeV/c)");
+                H_MM_ep_pmom.setTitleY("MX e'pX (GeV/c^2)");
+		H_MM_ep_pphi = new H1F("H_MM_ep_pphi","H_MM_ep_pphi",200,-0.5,360.5,200,0,4);
+                H_MM_ep_pphi.setTitle(("MX e'pX vs phi_p)");
+                H_MM_ep_pphi.setTitleX("phi_p (deg)");
+                H_MM_ep_pphi.setTitleY("MX e'pX (GeV/c^2)");
+		H_MM_ep_ptheta = new H1F("H_MM_ep_ptheta","H_MM_ep_ptheta",100,-0.5,50.5,200,0,4);
+                H_MM_ep_ptheta.setTitle(("MX e'pX vs theta_p)");
+                H_MM_ep_ptheta.setTitleX("theta_p (deg)");
+                H_MM_ep_ptheta.setTitleY("MX e'pX (GeV/c^2)");
+		H_MM_ep_zvertex = new H1F("H_MM_ep_zvertex","H_MM_ep_zvertex",100,-30,30,200,0,4);
+                H_MM_ep_zvertex.setTitle(("MX e'pX vs vz)");
+                H_MM_ep_zvertex.setTitleX("vz (cm)");
+                H_MM_ep_zvertex.setTitleY("MX e'pX (GeV/c^2)");
+		H_MM_ep_pbeta_mom = new H2F("H_MM_ep_zvertex","H_MM_ep_zvertex",100,-30,30,200,0,4);
+                H_MM_ep_pbeta_mom.setTitle(("MX e'pX vs vz)");
+                H_MM_ep_pbeta_mom.setTitleX("vz (cm)");
+                H_MM_ep_pbeta_mom.setTitleY("MX e'pX (GeV/c^2)");
 
 
         	VB = new LorentzVector(0,0,Ebeam,Ebeam);
@@ -404,7 +443,7 @@ public class deuterontarget {
 		if( l1 * l2 !=0 && Math.abs(prod)<l1*l2 )res = Math.toDegrees( Math.acos(prod/(l1*l2) ) );
 		return res;
 	}
-	public int makePiPlus(DataBank bank){
+	public int makePiPlus(DataBank bank){ 
 		for(int k = 0; k < bank.rows(); k++){
 			float px = bank.getFloat("p0_x" , k);
 			float py = bank.getFloat("p0_y" , k);
@@ -518,8 +557,8 @@ public class deuterontarget {
 			if(inDC && pid!=11&&nnegatives<2&&q<0&&thisbeta>0)mybetan=thisbeta;
 			if(inDC && q>0&&thisbeta>0)npositives++;
 		}
-
-
+		
+		
 		if(foundelec && nnegatives==2 && npositives>0 && npositives<3 && mybetap>0 ){
 			for(int k = 0; k < bank.rows(); k++){
 				int pid = bank.getInt("pid", k);
@@ -756,7 +795,7 @@ public class deuterontarget {
 
 		if(partBank!=null)trig_part_ind = makeTrigElectron(partBank,event);
 		if(trackBank!=null&&trackDetBank!=null)getTrigTBTrack(trackDetBank,trackBank);
-
+		
 		if(partBank!=null){
 			e_part_ind = makeElectron(partBank);
 			pip_part_ind = makePiPlusPID(partBank);
@@ -764,7 +803,7 @@ public class deuterontarget {
 			makePiPlusPimPID(partBank);
 		}
 		if(e_part_ind==-1)return;
-
+	
 		Nelecs++;
                 LorentzVector VGS = new LorentzVector(0,0,0,0);
                 VGS.add(VB);
@@ -776,7 +815,7 @@ public class deuterontarget {
 		if(scintillBank!=null){
                         getElecEBTOF(scintillBank);
                 }
-
+		
 		if(trackDetBank!=null){
                         getTBTrack(trackDetBank);
                 }
@@ -795,14 +834,14 @@ public class deuterontarget {
                         H_e_Q2.fill(e_Q2);
 			H_e_xB.fill(e_xB);
 			H_e_W.fill(e_W);
-			//pip_part_ind==-1 suggested as condition
+			
 			if(pin_part_ind>-1 && Math.abs(pin_vert_time-e_vert_time)<5 && Math.abs(pin_beta-1) <0.1 && pin_track_chi2<500 && e_track_chi2<500){
                                 H_pin_beta_p.fill(pin_mom,pin_beta);
                         }
-
-
-			if( pin_part_ind>-1 && Math.abs(pin_vert_time-e_vert_time)<5 && Math.abs(pin_beta-1) <(0.01 + 0.025/pin_mom)
-					&& pin_track_chi2<2000 && e_track_chi2<2000 && pin_mom>1
+			
+			
+			if( pin_part_ind>-1 && Math.abs(pin_vert_time-e_vert_time)<5 && Math.abs(pin_beta-1) <(0.01 + 0.025/pin_mom) 
+					&& pin_track_chi2<500 && e_track_chi2<500 && pin_mom>0.5
 			  ){
 				LorentzVector VNeutr = new LorentzVector(0,0,0,0);
 				VNeutr.add(VB);
@@ -811,6 +850,7 @@ public class deuterontarget {
 				VNeutr.sub(VPIN);
 				H_MM_epin.fill(VNeutr.mass());
 				H_MM_epin_zoom.fill(VNeutr.mass());
+				H_MM_pin_mom.fill(pin_mom,VNeutr.mass());
 				if(pin_sect>0&&pin_sect<7)H_MM_epin_Spin[pin_sect-1].fill(VNeutr.mass());
 				if(e_sect>0&&e_sect<7)H_MM_epin_Se[e_sect-1].fill(VNeutr.mass());
 				H_pin_theta_phi.fill(pin_phi,pin_theta);
@@ -877,11 +917,11 @@ public class deuterontarget {
 			}
 		}
 	}
-
-
+	
+	
         public void plot() {
-
-
+		
+		
 		EmbeddedCanvas can_2pis = new EmbeddedCanvas();
 		can_2pis.setSize(2800,1400);
 		can_2pis.divide(4,3);
@@ -929,7 +969,7 @@ public class deuterontarget {
 		can_e_pin.cd(11);can_e_pin.draw(H_pin_vz_theta);
 		can_e_pin.cd(12);can_e_pin.draw(H_pin_vz_mom);
 		can_e_pin.cd(13);can_e_pin.draw(H_pin_vz_ve_diff_theta);
-
+		
 		can_e_pin.cd(14);can_e_pin.draw(H_pin_vtd_mom);
 		can_e_pin.cd(15);can_e_pin.draw(H_pin_vtd_theta);
 		can_e_pin.cd(16);can_e_pin.draw(H_pin_vtd_phi);
@@ -937,21 +977,22 @@ public class deuterontarget {
 		can_e_pin.cd(18);can_e_pin.draw(H_pin_vz_ve_diff);
 		can_e_pin.cd(19);can_e_pin.draw(H_pin_vz_ve_diff_mom);
 		can_e_pin.cd(20);can_e_pin.draw(H_pin_vz_ve_diff_phi);
-
+		
 		can_e_pin.cd(21);can_e_pin.draw(H_pin_beta_p);
 		can_e_pin.cd(22);can_e_pin.draw(H_pin_beta2_p);
 		can_e_pin.cd(23);can_e_pin.draw(H_MM_epin);
 		can_e_pin.cd(24);can_e_pin.draw(H_MM_epin_zoom);
-		can_e_pin.cd(25);can_e_pin.draw(H_MM_epin_phi);
+		can_e_pin.cd(25);can_e_pin.draw(H_MM_epin_phi);	
 		can_e_pin.cd(26);can_e_pin.draw(H_pin_e_vt);
 		can_e_pin.cd(27);can_e_pin.draw(H_pin_vz_ve_diff_Dphi);
-
+		
 		for(int i=0;i<6;i++){
 			can_e_pin.cd(28+i);can_e_pin.draw(H_MM_epin_Spin[i]);
 		}
 		for(int i=0;i<6;i++){
 			can_e_pin.cd(35+i);can_e_pin.draw(H_MM_epin_Se[i]);
 		}
+		can_e_pin.cd(41);can_e_pin.draw(H_MM_pin_mom);
 
 		if(runNum>0){
 			if(!write_volatile)can_e_pin.save(String.format("plots"+runNum+"/e_pin.png"));
@@ -963,7 +1004,7 @@ public class deuterontarget {
 			System.out.println(String.format("save plots/e_pin.png"));
 		}
 	}
-
+		
         public void write() {
                 TDirectory dirout = new TDirectory();
 		dirout.mkdir("/elec/");
@@ -975,12 +1016,12 @@ public class deuterontarget {
 		}
 
 		if(write_volatile)if(runNum>0)dirout.writeFile("/volatile/clas12/rgb/spring19/plots"+runNum+"/out_deuterontarget_"+runNum+".hipo");
-
+		
 		if(!write_volatile){
 			if(runNum>0)dirout.writeFile("plots"+runNum+"/out_deuterontarget_"+runNum+".hipo");
 			else dirout.writeFile("plots/out_deuterontarget.hipo");
 		}
-
+		
         }
 ////////////////////////////////////////////////
         public static void main(String[] args) {
@@ -1038,3 +1079,4 @@ public class deuterontarget {
 		ana.plot();
         }
 }
+

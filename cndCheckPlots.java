@@ -415,10 +415,9 @@ public class cndCheckPlots {
 								if(/*newHit==0 && !sidehit && sector!=3 && sector!=11 &&sector!=19*/true){
 										float betaN = (float)Math.sqrt(x*x+y*y+(z-z0)*(z-z0))/(time-STT)/29.92f;
 										//System.out.println("time "+time+"STT "+STT+" betaN "+betaN+"layer "+layer);
-									if (betaN>0.2) {
+
 										H_CND_beta_e_neutral.fill(e,betaN);
 										H_CND_time_z_neutral[layer-1].fill(z,time-STT);
-									}
 								}
 						}
 
@@ -499,9 +498,7 @@ public class cndCheckPlots {
 								if(charge==-1 && z<(25.+2.5*(layer-1)))H_CND_t_t.fill(timeC,timeCVT);
 								//only include one hit from cluster
 								//if(Tracks[trkID]==0){
-								if (betaCND > 0.2){
-									H_CND_beta_energy.fill(e,betaCND);
-								}
+								H_CND_beta_energy.fill(e,betaCND);
 								if(/*sector==18 &&*/   /*&& mass2>-0.2*0.2*/  charge==1  && z<(25.+2.5*(layer-1)) && Math.abs(vtP)<1.5 /*&& Math.abs(z-tz)<5.*/)H_CND_beta_p.fill(mom,betaCND);
 								if(charge==-1 /*&& Math.sqrt(Math.abs(mass2))<0.3  && mass2>-0.3*0.3*/ && z<(25.+2.5*(layer-1)) && Math.abs(vtP)<1.5/* && Math.abs(z-tz)<5.*/)H_CND_beta_pn.fill(mom,betaCND);				
 								//	Tracks[trkID]=1;
@@ -746,10 +743,8 @@ public class cndCheckPlots {
 										can_cnd.cd(12+iL);can_cnd.draw(H_CVT_CND_z[iL]);
 										can_cnd.cd(15+iL);can_cnd.draw(H_CVT_CND_phi[iL]);
 								}
-								//can_cnd.getPad(18).getAxisZ().setLog(true);
 								can_cnd.cd(18);can_cnd.draw(H_CND_beta_energy);
 								can_cnd.cd(34);can_cnd.draw(H_CND_beta_p);can_cnd.draw(BetaPProt,"same");can_cnd.draw(BetaPPion,"same");can_cnd.getPad().getAxisZ().setLog(true);
-								//can_cnd.getPad(19).getAxisZ().setLog(true);
 								can_cnd.cd(19);can_cnd.draw(H_CND_beta_e_neutral);
 								for(int iL=0;iL<3;iL++){
 										can_cnd.cd(21+iL);can_cnd.draw(H_CND_time_z_charged[iL]);

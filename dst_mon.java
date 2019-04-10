@@ -91,14 +91,12 @@ public class dst_mon {
 		Nelecs_sect = new int[6];
 		for(int s=0;s<6;s++){Ntrigs_sect[s]=0;Nelecs_sect[s]=0;}
 		trigger_bits = new boolean[32];
-		//Eb = 2.22f;
-		Mp = 0.93827f;
+		Eb = 2.22f;Mp = 0.93827f;
                 if(reqEB>0 && reqEB<4)Eb=2.22f;
                 //if(reqEB>4 && reqEB<7.6)Eb=6.535f;
-                //if(reqEB>4 && reqEB<7.6)Eb=6.42f;
-                //if(reqEB>7.6 && reqEB<9)Eb=7.55f;
-                //if(reqEB>9)Eb=10.6f;
-                Eb = reqEB;
+                if(reqEB>4 && reqEB<7.6)Eb=6.42f;
+                if(reqEB>7.6 && reqEB<9)Eb=7.55f;
+                if(reqEB>9)Eb=10.6f;
                 System.out.println("Eb="+Eb+" (EB="+EB+") , run="+runNum);
 
                 VB = new LorentzVector(0,0,Eb,Eb);
@@ -299,7 +297,7 @@ public class dst_mon {
 			H_FTOF_neg_beta_mom_pad1b[s].setTitle(String.format("NEG TOF1B #beta vs mom S%d",s+1));
 			H_FTOF_neg_beta_mom_pad1b[s].setTitleX("p (GeV)");
 			H_FTOF_neg_beta_mom_pad1b[s].setTitleY("TOF #beta");
-			H_FTOF_pos_mass_mom_pad1a[s] = new H2F(String.format("H_FTOF_pos_mass_mom_pad1a_%d",s+1),String.format("H_FTOF_pos_mass_mom_pad1a_%d",s+1),100,0,5,150,-0.5,4.5);
+			H_FTOF_pos_mass_mom_pad1a[s] = new H2F(String.format("H_FTOF_pos_mass_mom_pad1a_%d",s+1),String.format("H_FTOF_pos_mass_mom_pad1a_%d",s+1),100,0,5,100,-0.5,4.5);
 			H_FTOF_pos_mass_mom_pad1a[s].setTitle(String.format("POS Mass^2 vs mom S%d",s+1));
 			H_FTOF_pos_mass_mom_pad1a[s].setTitleX("p (GeV)");
 			H_FTOF_pos_mass_mom_pad1a[s].setTitleY("M^2 (GeV^2)");
@@ -1291,25 +1289,24 @@ public class dst_mon {
 
 		EmbeddedCanvas can_e_FTOF1A_mass = new EmbeddedCanvas();
 		can_e_FTOF1A_mass.setSize(3600,4800);
-		can_e_FTOF1A_mass.divide(6,8);
+		can_e_FTOF1A_mass.divide(6,6);
 		can_e_FTOF1A_mass.setAxisTitleSize(24);
 		can_e_FTOF1A_mass.setAxisFontSize(24);
 		can_e_FTOF1A_mass.setTitleSize(24);
 		for(int s=0;s<6;s++){
 			H1F H_FTOF_pos_mass_mom_pad1a_projY = H_FTOF_pos_mass_mom_pad1a[s].projectionY();
 			H_FTOF_pos_mass_mom_pad1a_projY.setTitle(String.format("POS TOF1A mass S%d",s+1));
-			H_FTOF_pos_mass_mom_pad1a_projY.setTitleX("M^2 (GeV^2)");
+			H_FTOF_pos_mass_mom_pad1a_projY.setTitleX("M (GeV)");
 			H1F H_FTOF_neg_mass_mom_pad1a_projY = H_FTOF_neg_mass_mom_pad1a[s].projectionY();
 			H_FTOF_neg_mass_mom_pad1a_projY.setTitle(String.format("NEG TOF1A mass S%d",s+1));
-			H_FTOF_neg_mass_mom_pad1a_projY.setTitleX("M^2 (GeV^2)");
-			can_e_FTOF1A_mass.cd(s);can_e_FTOF1A_mass.getPad(s).getAxisY().setLog(true);can_e_FTOF1A_mass.draw(H_FTOF_pos_mass_mom_pad1a_projY);
+			H_FTOF_neg_mass_mom_pad1a_projY.setTitleX("M (GeV)");
+			can_e_FTOF1A_mass.cd(s);can_e_FTOF1A_mass.getPad(s).getAxisY().setLog(true);
+			can_e_FTOF1A_mass.cd(s);can_e_FTOF1A_mass.draw(H_FTOF_pos_mass_mom_pad1a_projY);
 			can_e_FTOF1A_mass.cd(s+6);can_e_FTOF1A_mass.draw(H_FTOF_pos_mass_mom_pad1a[s]);
-			can_e_FTOF1A_mass.cd(s+12);can_e_FTOF1A_mass.draw(H_FTOF_pos_mass_the_pad1a[s]);
-			can_e_FTOF1A_mass.cd(s+18);can_e_FTOF1A_mass.draw(H_FTOF_pos_beta_mom_pad1a[s]);
-			can_e_FTOF1A_mass.cd(s+24);can_e_FTOF1A_mass.draw(H_FTOF_neg_mass_mom_pad1a_projY);
-			can_e_FTOF1A_mass.cd(s+30);can_e_FTOF1A_mass.draw(H_FTOF_neg_mass_mom_pad1a[s]);
-			can_e_FTOF1A_mass.cd(s+36);can_e_FTOF1A_mass.draw(H_FTOF_neg_mass_the_pad1a[s]);
-			can_e_FTOF1A_mass.cd(s+42);can_e_FTOF1A_mass.draw(H_FTOF_neg_beta_mom_pad1a[s]);
+			can_e_FTOF1A_mass.cd(s+12);can_e_FTOF1A_mass.draw(H_FTOF_pos_beta_mom_pad1a[s]);
+			can_e_FTOF1A_mass.cd(s+18);can_e_FTOF1A_mass.draw(H_FTOF_neg_mass_mom_pad1a_projY);
+			can_e_FTOF1A_mass.cd(s+24);can_e_FTOF1A_mass.draw(H_FTOF_neg_mass_mom_pad1a[s]);
+			can_e_FTOF1A_mass.cd(s+30);can_e_FTOF1A_mass.draw(H_FTOF_neg_beta_mom_pad1a[s]);
 		}
 		if(runNum>0){
 			can_e_FTOF1A_mass.save(String.format("plots"+runNum+"/dst_FTOF1A_mass.png"));
@@ -1322,7 +1319,7 @@ public class dst_mon {
 
 		EmbeddedCanvas can_e_FTOF1B_mass = new EmbeddedCanvas();
 		can_e_FTOF1B_mass.setSize(3600,4800);
-		can_e_FTOF1B_mass.divide(6,8);
+		can_e_FTOF1B_mass.divide(6,6);
 		can_e_FTOF1B_mass.setAxisTitleSize(24);
 		can_e_FTOF1B_mass.setAxisFontSize(24);
 		can_e_FTOF1B_mass.setTitleSize(24);
@@ -1333,14 +1330,13 @@ public class dst_mon {
 			H1F H_FTOF_neg_mass_mom_pad1b_projY = H_FTOF_neg_mass_mom_pad1b[s].projectionY();
 			H_FTOF_neg_mass_mom_pad1b_projY.setTitle(String.format("NEG TOF1B mass^2 S%d",s+1));
 			H_FTOF_neg_mass_mom_pad1b_projY.setTitleX("M^2 (GeV^2)");
-			can_e_FTOF1B_mass.cd(s);can_e_FTOF1B_mass.getPad(s).getAxisY().setLog(true);can_e_FTOF1B_mass.draw(H_FTOF_pos_mass_mom_pad1b_projY);
+			can_e_FTOF1B_mass.cd(s);can_e_FTOF1B_mass.getPad(s).getAxisY().setLog(true);
+			can_e_FTOF1B_mass.cd(s);can_e_FTOF1B_mass.draw(H_FTOF_pos_mass_mom_pad1b_projY);
 			can_e_FTOF1B_mass.cd(s+6);can_e_FTOF1B_mass.draw(H_FTOF_pos_mass_mom_pad1b[s]);
-			can_e_FTOF1B_mass.cd(s+12);can_e_FTOF1B_mass.draw(H_FTOF_pos_mass_the_pad1b[s]);
-			can_e_FTOF1B_mass.cd(s+18);can_e_FTOF1B_mass.draw(H_FTOF_pos_beta_mom_pad1b[s]);
-			can_e_FTOF1B_mass.cd(s+24);can_e_FTOF1B_mass.draw(H_FTOF_neg_mass_mom_pad1b_projY);
-			can_e_FTOF1B_mass.cd(s+30);can_e_FTOF1B_mass.draw(H_FTOF_neg_mass_mom_pad1b[s]);
-			can_e_FTOF1B_mass.cd(s+36);can_e_FTOF1B_mass.draw(H_FTOF_neg_mass_the_pad1b[s]);
-			can_e_FTOF1B_mass.cd(s+42);can_e_FTOF1B_mass.draw(H_FTOF_neg_beta_mom_pad1b[s]);
+			can_e_FTOF1B_mass.cd(s+12);can_e_FTOF1B_mass.draw(H_FTOF_pos_beta_mom_pad1b[s]);
+			can_e_FTOF1B_mass.cd(s+18);can_e_FTOF1B_mass.draw(H_FTOF_neg_mass_mom_pad1b_projY);
+			can_e_FTOF1B_mass.cd(s+24);can_e_FTOF1B_mass.draw(H_FTOF_neg_mass_mom_pad1b[s]);
+			can_e_FTOF1B_mass.cd(s+30);can_e_FTOF1B_mass.draw(H_FTOF_neg_beta_mom_pad1b[s]);
 		}
 		if(runNum>0){
 			can_e_FTOF1B_mass.save(String.format("plots"+runNum+"/dst_FTOF1B_mass.png"));
@@ -1493,6 +1489,9 @@ public class dst_mon {
 			dirout.addDataSet(H_elast_W_theta[s],H_elast_W_Q2[s],H_elast_dvz_theta[s]);
 		}
 		dirout.addDataSet(H_elast_Dphi_phi,H_elast_dvz_vz,H_elast_dvz_theta_all);
+		dirout.mkdir("/FTOF/");
+		dirout.cd("/FTOF/");
+		for(int s=0;s<6;s++)dirout.addDataSet(H_FTOF_pos_mass_mom_pad1a[s], H_FTOF_neg_mass_mom_pad1a[s], H_FTOF_pos_mass_mom_pad1b[s], H_FTOF_neg_mass_mom_pad1b[s]);
                 if(runNum>0)dirout.writeFile("plots"+runNum+"/dst_mon_"+runNum+".hipo");
                 else dirout.writeFile("plots/dst_mon.hipo");
 	}
